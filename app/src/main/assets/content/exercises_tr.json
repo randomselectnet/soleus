@@ -1,0 +1,156 @@
+[
+  {
+    "id": "soleus-pushup",
+    "trName": "Soleus Push-Up",
+    "steps": [
+      "Sandalyede dik oturun, ayak tabanlarınız yere tam bassın.",
+      "Topuklarınızı yerden kaldırıp parmak ucunda yükselin.",
+      "Üst noktada 1 saniye bekleyip topukları yavaşça indirin.",
+      "2 dakika boyunca veya yorulana kadar tekrarlayın."
+    ],
+    "durationSec": 120,
+    "benefit": "Baldırdaki soleus kasını çalıştırarak bacak dolaşımını hızlandırır ve uzun oturuşta şişliği azaltır.",
+    "caution": "Dizlerinizde ağrı hissederseniz durun; hareketi hızlı ve zıplayarak yapmayın.",
+    "animationAsset": "lottie/soleus-pushup.json"
+  },
+  {
+    "id": "ankle-circle-calf-raise",
+    "trName": "Ayak Bileği Çevirme + Calf Raise",
+    "steps": [
+      "Bir ayağınızı hafifçe yerden kaldırın.",
+      "Ayak bileğinizle her yöne 10 tur daire çizin.",
+      "Diğer ayakla tekrarlayın.",
+      "Sonra iki ayakla 15 kez parmak ucuna yükselip inin."
+    ],
+    "durationSec": 120,
+    "benefit": "Ayak bileği hareketliliğini artırır, baldırları güçlendirir ve ayak uyuşmasını önler.",
+    "caution": "Bilekte keskin ağrı olursa daireyi küçültün veya durun.",
+    "animationAsset": "lottie/ankle-circle-calf-raise.json"
+  },
+  {
+    "id": "hip-squeeze",
+    "trName": "Kalça Sıkma",
+    "steps": [
+      "Sandalyede dik oturun, ayaklarınız kalça genişliğinde açık olsun.",
+      "Kalça kaslarınızı 5 saniye boyunca sıkın.",
+      "Gevşeyip derin bir nefes alın.",
+      "Toplam 10 tekrar yapın."
+    ],
+    "durationSec": 90,
+    "benefit": "Uzun oturuşta uyuyan kalça kaslarını uyandırır, bel yükünü azaltır.",
+    "caution": "Nefesinizi tutmayın; belinizi aşırı çukurlaştırmayın.",
+    "animationAsset": "lottie/hip-squeeze.json"
+  },
+  {
+    "id": "seated-leg-extension",
+    "trName": "Oturarak Diz Uzatma",
+    "steps": [
+      "Sandalyenin önüne doğru oturun, sırtınız dik olsun.",
+      "Bir bacağınızı diz hizasına kadar düz uzatıp 3 saniye tutun.",
+      "Yavaşça indirip diğer bacakla tekrarlayın.",
+      "Her bacakla 10 tekrar yapın."
+    ],
+    "durationSec": 90,
+    "benefit": "Ön uyluk kaslarını güçlendirir, diz çevresini destekler.",
+    "caution": "Dizinizde batma hissederseniz bacağı tam düzeltmeyin, açıyı küçültün.",
+    "animationAsset": "lottie/seated-leg-extension.json"
+  },
+  {
+    "id": "neck-side-stretch",
+    "trName": "Boyun Yan Esnetme",
+    "steps": [
+      "Dik oturun, omuzlarınızı gevşetin.",
+      "Sağ kulağınızı sağ omzunuza yaklaştırın, 20 saniye tutun.",
+      "Aynı hareketi sol tarafa yapın.",
+      "Esneme sırasında omuzlarınızı kaldırmayın."
+    ],
+    "durationSec": 60,
+    "benefit": "Boyun yan kaslarındaki gerginliği çözer, ekran başında oluşan tutulmaları rahatlatır.",
+    "caution": "Boynunuzu zorlayarak çekmeyin; baş dönmesi olursa durun.",
+    "animationAsset": "lottie/neck-side-stretch.json"
+  },
+  {
+    "id": "shoulder-shrug-roll",
+    "trName": "Omuz Silkme + Roll",
+    "steps": [
+      "Omuzlarınızı kulaklarınıza doğru kaldırıp 2 saniye tutun, sonra bırakın. 10 kez tekrarlayın.",
+      "Omuzlarınızla öne doğru 10 geniş daire çizin.",
+      "Aynı daireleri geriye doğru 10 kez yapın.",
+      "Hareket boyunca kollarınız gevşek kalsın."
+    ],
+    "durationSec": 90,
+    "benefit": "Omuz ve boyun çevresindeki birikmiş gerginliği atar, duruşu rahatlatır.",
+    "caution": "Daireleri hızlı ve sert çevirmeyin; omuzda takılma hissi olursa aralığı daraltın.",
+    "animationAsset": "lottie/shoulder-shrug-roll.json"
+  },
+  {
+    "id": "scapular-squeeze",
+    "trName": "Scapular Squeeze / Göğüs Açma",
+    "steps": [
+      "Dik oturun, kollarınız yanda gevşek olsun.",
+      "Kürek kemiklerinizi birbirine yaklaştırıp 10 saniye tutun.",
+      "Göğsünüzü açıp derin nefes alın.",
+      "Toplam 5 tekrar yapın."
+    ],
+    "durationSec": 60,
+    "benefit": "Kambur oturuşu düzeltir, sırt üstü kasları güçlendirir ve göğsü açar.",
+    "caution": "Belinizi aşırı çukurlaştırmayın; omuzlarınızı kulaklara çekmeyin.",
+    "animationAsset": "lottie/scapular-squeeze.json"
+  },
+  {
+    "id": "seated-trunk-rotation",
+    "trName": "Oturarak Gövde Rotasyonu",
+    "steps": [
+      "Dik oturun, ayaklarınız yerde sabit kalsın.",
+      "Kollarınızı göğsünüzde kavuşturup gövdenizi sağa çevirin, 20 saniye tutun.",
+      "Aynı hareketi sola yapın.",
+      "Dönüş sırasında kalçanızın sandalyeden kalkmamasına dikkat edin."
+    ],
+    "durationSec": 60,
+    "benefit": "Bel ve gövde yan kaslarını esnetir, omurga hareketliliğini korur.",
+    "caution": "Dönüşü zorlamayın; belde keskin ağrı olursa durun.",
+    "animationAsset": "lottie/seated-trunk-rotation.json"
+  },
+  {
+    "id": "wrist-forearm-stretch",
+    "trName": "Bilek + Önkol Esnetme",
+    "steps": [
+      "Bir kolunuzu öne uzatıp avucunuzu yukarı çevirin, diğer elle parmakları hafifçe gerin. 20 saniye tutun.",
+      "Avucunuzu aşağı çevirip aynı esnetmeyi 20 saniye yapın.",
+      "Diğer kol için tekrarlayın.",
+      "Sonra 15 kez yumruk yapıp parmakları genişçe açın."
+    ],
+    "durationSec": 90,
+    "benefit": "Klavye kullanımından yorulan bilek ve önkol kaslarını rahatlatır.",
+    "caution": "Parmakları acıtacak kadar germeyin; bilekte uyuşma olursa durun.",
+    "animationAsset": "lottie/wrist-forearm-stretch.json"
+  },
+  {
+    "id": "eye-202020-breath-444",
+    "trName": "20-20-20 Göz + 4-4-4 Nefes",
+    "steps": [
+      "Ekrandan uzaklaşıp en az 6 metre uzaktaki bir noktaya 20 saniye bakın.",
+      "Gözlerinizi yavaşça 3 kez kırpıp göz kaslarını gevşetin.",
+      "Burnunuzdan 4 sayarak nefes alın, 4 sayarak tutun, 4 sayarak verin.",
+      "Nefes döngüsünü 60 saniye boyunca sürdürün."
+    ],
+    "durationSec": 60,
+    "benefit": "Göz yorgunluğunu azaltır, kısa nefes molasıyla zihinsel tazelenme sağlar.",
+    "caution": "Baş dönmesi hissederseniz nefes temposunu yavaşlatın ve normal nefese dönün.",
+    "animationAsset": "lottie/eye-202020-breath-444.json"
+  },
+  {
+    "id": "standup-mini-set",
+    "trName": "Kalkınca Mini Set",
+    "steps": [
+      "Ayağa kalkıp sandalyenizi arkaya itin.",
+      "10 kez squat yapın veya masaya yaslanarak 10 masa push-up yapın.",
+      "Ardından 1 dakika ofis içinde tempolu yürüyün.",
+      "Yerine oturup bir bardak su için."
+    ],
+    "durationSec": 90,
+    "benefit": "Uzun oturuşu böler, bacakları çalıştırır ve kan dolaşımını canlandırır.",
+    "caution": "Sessiz ortamda gürültü çıkarmamaya dikkat edin; diz ağrısında squat derinliğini azaltın.",
+    "animationAsset": "lottie/standup-mini-set.json"
+  }
+]
