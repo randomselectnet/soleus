@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -25,7 +26,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.soleus.office.data.db.Exercise
 import com.soleus.office.ui.theme.Murekkep
 import kotlinx.coroutines.delay
@@ -37,8 +45,8 @@ fun formatSure(toplamSaniye: Int): String {
 }
 
 /**
- * Hareket detayı: animasyon yer tutucusu (Lottie Task 7'de), adım listesi,
- * geri sayım + MotionRing, Yapıldı butonu.
+ * Hareket detayı: Lottie animasyonu (reduce-motion'da statik ilk kare),
+ * adım listesi, geri sayım + MotionRing, Yapıldı butonu.
  */
 @Composable
 fun ExerciseDetailScreen(
@@ -70,18 +78,50 @@ fun ExerciseDetailScreen(
             style = MaterialTheme.typography.displayLarge,
             modifier = Modifier.fillMaxWidth()
         )
-        // Lottie yer tutucusu: Task 7'de gerçek animasyon bağlanacak.
+        // Lottie animasyonu: reduce-motion açıksa statik ilk kare.
+        val context = LocalContext.current
+        val animasyonuAzalt = remember {
+            try {
+                android.provider.Settings.Global.getFloat(
+                    context.contentResolver,
+                    android.provider.Settings.Global.ANIMATOR_DURATION_SCALE,
+                    1f
+                ) == 0f
+            } catch (_: Exception) {
+                false
+            }
+        }
+        val composition by rememberLottieComposition(
+            LottieCompositionSpec.Asset(exercise.animationAsset)
+        )
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp)
-                .border(1.dp, Murekkep.copy(alpha = 0.3f)),
+                .height(200.dp)
+                .border(1.dp, Murekkep.copy(alpha = 0.3f))
+                .semantics { contentDescription = exercise.trName },
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Animasyon yakında\n${exercise.animationAsset}",
-                style = MaterialTheme.typography.bodyLarge
-            )
+            if (composition != null) {
+                if (animasyonuAzalt) {
+                    LottieAnimation(
+                        composition = composition,
+                        progress = { 0f },
+                        modifier = Modifier.size(200.dp)
+                    )
+                } else {
+                    LottieAnimation(
+                        composition = composition,
+                        iterations = LottieConstants.IterateForever,
+                        modifier = Modifier.size(200.dp)
+                    )
+                }
+            } else {
+                Text(
+                    text = "Animasyon yükleniyor\n${exercise.animationAsset}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
         MotionRing(progress = ilerleme)
         Text(
