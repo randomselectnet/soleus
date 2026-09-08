@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.soleus.office.data.db.Exercise
+import com.soleus.office.domain.durationLabel
 import kotlinx.coroutines.delay
 
 /**
@@ -66,7 +67,7 @@ fun ExerciseListScreen(
                                 style = MaterialTheme.typography.titleLarge
                             )
                             Text(
-                                text = "Süre: ${exercise.durationSec / 60} dk",
+                                text = "Süre: ${durationLabel(exercise.durationSec)}",
                                 style = MaterialTheme.typography.bodyLarge
                             )
                         }

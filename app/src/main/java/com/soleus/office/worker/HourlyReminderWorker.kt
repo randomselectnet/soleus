@@ -8,6 +8,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.soleus.office.data.ContentLoader
+import com.soleus.office.data.db.AppDb
 import com.soleus.office.domain.dueExercise
 import com.soleus.office.domain.shouldRemind
 import java.util.Calendar
@@ -26,16 +27,21 @@ class HourlyReminderWorker(
         val nowMin = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
         if (!shouldRemind(nowMin, start, end)) return Result.success()
 
-        val recentIds = inputData.getStringArray(KEY_RECENT_IDS)?.toList().orEmpty()
-        val ids = runCatching { ContentLoader.load(applicationContext).map { it.id } }
+        val inputRecent = inputData.getStringArray(KEY_RECENT_IDS)?.toList().orEmpty()
+        val egzersizler = runCatching { ContentLoader.load(applicationContext) }
             .getOrDefault(emptyList())
-        if (ids.isEmpty()) return Result.success()
+        if (egzersizler.isEmpty()) return Result.success()
+        val ids = egzersizler.map { it.id }
+
+        // Rotasyon: son tamamlananları doğrudan DB'den oku (inputData yazılmıyor).
+        val dbRecent = runCatching {
+            AppDb.get(applicationContext).logDao().recent(ids.size).map { it.exerciseId }
+        }.getOrDefault(emptyList())
+        val recentIds = (dbRecent + inputRecent).distinct()
 
         val nextId = dueExercise(ids, recentIds)
-        val name = runCatching {
-            ContentLoader.load(applicationContext).firstOrNull { it.id == nextId }?.trName
-        }.getOrNull() ?: nextId
-        NotificationHelper.show(applicationContext, name, nextId)
+        val next = egzersizler.firstOrNull { it.id == nextId }
+        NotificationHelper.show(applicationContext, next?.trName ?: nextId, nextId, next?.durationSec ?: 120)
         return Result.success()
     }
 

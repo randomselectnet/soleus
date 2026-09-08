@@ -69,6 +69,8 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
         composable(SoleusRotalari.KARSILAMA) {
             OnboardingScreen(
                 onGrant = {
+                    appCtx.getSharedPreferences("soleus", android.content.Context.MODE_PRIVATE)
+                        .edit().putBoolean("onboarding_done", true).apply()
                     navController.navigate(SoleusRotalari.ANA_SAYFA) {
                         popUpTo(SoleusRotalari.KARSILAMA) { inclusive = true }
                     }
@@ -80,6 +82,12 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             val egzersizler = remember { ContentLoader.load(ctx) }
             var streak by remember { mutableIntStateOf(0) }
             LaunchedEffect(Unit) {
+                val done = ctx.getSharedPreferences("soleus", android.content.Context.MODE_PRIVATE)
+                    .getBoolean("onboarding_done", false)
+                if (!done) {
+                    navController.navigate(SoleusRotalari.KARSILAMA)
+                    return@LaunchedEffect
+                }
                 val logs = withContext(Dispatchers.IO) {
                     AppDb.get(ctx).logDao().recent(365)
                 }
@@ -92,7 +100,9 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
                     nextDurationSec = siradaki.durationSec,
                     streak = streak,
                     onStart = { navController.navigate(SoleusRotalari.detay(siradaki.id)) },
-                    onOpenList = { navController.navigate(SoleusRotalari.LISTE) }
+                    onOpenList = { navController.navigate(SoleusRotalari.LISTE) },
+                    onOpenStats = { navController.navigate(SoleusRotalari.ISTATISTIK) },
+                    onOpenSettings = { navController.navigate(SoleusRotalari.AYARLAR) }
                 )
             }
         }

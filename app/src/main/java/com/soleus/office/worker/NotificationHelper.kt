@@ -13,12 +13,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.soleus.office.MainActivity
+import com.soleus.office.domain.durationLabel
 
 object NotificationHelper {
     const val CHANNEL_ID = "soleus_reminder"
     private const val NOTIFICATION_ID = 1001
 
-    fun show(context: Context, exerciseName: String, exerciseId: String) {
+    fun show(context: Context, exerciseName: String, exerciseId: String, durationSec: Int = 120) {
         ensureChannel(context)
         if (Build.VERSION.SDK_INT >= 33 &&
             ActivityCompat.checkSelfPermission(
@@ -46,7 +47,7 @@ object NotificationHelper {
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle("Hareket zamanı")
-            .setContentText("$exerciseName — 2 dk")
+            .setContentText("$exerciseName — ${durationLabel(durationSec)}")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(tap)
             .setAutoCancel(true)

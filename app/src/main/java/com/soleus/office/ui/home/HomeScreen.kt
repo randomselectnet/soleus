@@ -2,6 +2,7 @@ package com.soleus.office.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.soleus.office.domain.durationLabel
 import com.soleus.office.ui.theme.Kagit
 import com.soleus.office.ui.theme.Murekkep
 
@@ -30,7 +32,9 @@ fun HomeScreen(
     nextDurationSec: Int,
     streak: Int = 0,
     onStart: () -> Unit,
-    onOpenList: () -> Unit
+    onOpenList: () -> Unit,
+    onOpenStats: () -> Unit = {},
+    onOpenSettings: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -62,7 +66,7 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Süre: ${nextDurationSec / 60} dk",
+                    text = "Süre: ${durationLabel(nextDurationSec)}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Murekkep
                 )
@@ -83,6 +87,27 @@ fun HomeScreen(
                 .heightIn(min = 48.dp)
         ) {
             Text(text = "Tüm hareketler")
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            OutlinedButton(
+                onClick = onOpenStats,
+                modifier = Modifier
+                    .weight(1f)
+                    .heightIn(min = 48.dp)
+            ) {
+                Text(text = "İstatistik")
+            }
+            OutlinedButton(
+                onClick = onOpenSettings,
+                modifier = Modifier
+                    .weight(1f)
+                    .heightIn(min = 48.dp)
+            ) {
+                Text(text = "Ayarlar")
+            }
         }
     }
 }
