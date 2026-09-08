@@ -6,6 +6,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.soleus.office.data.ContentLoader
 import com.soleus.office.domain.dueExercise
 import com.soleus.office.domain.shouldRemind
@@ -44,13 +45,24 @@ class HourlyReminderWorker(
         const val KEY_END = "endMin"
         const val KEY_RECENT_IDS = "recentIds"
 
-        fun scheduleHourly(context: Context, intervalMin: Long = 60) {
+        fun scheduleHourly(
+            context: Context,
+            intervalMin: Long = 60,
+            workStartMin: Int = 540,
+            workEndMin: Int = 1080
+        ) {
             val safeInterval = intervalMin.coerceAtLeast(15)
             val request = PeriodicWorkRequestBuilder<HourlyReminderWorker>(safeInterval, TimeUnit.MINUTES)
+                .setInputData(
+                    workDataOf(
+                        KEY_START to workStartMin,
+                        KEY_END to workEndMin
+                    )
+                )
                 .build()
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 WORK_NAME,
-                ExistingPeriodicWorkPolicy.KEEP,
+                ExistingPeriodicWorkPolicy.REPLACE,
                 request
             )
         }
