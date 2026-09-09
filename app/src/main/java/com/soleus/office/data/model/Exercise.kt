@@ -7,7 +7,6 @@ data class Exercise(
     val durationSec: Int,
     val benefit: String,
     val caution: String,
-    val animationAsset: String,
     val faydaKisa: String,
     val dikkatKisa: String,
     val dozajEtiket: String,

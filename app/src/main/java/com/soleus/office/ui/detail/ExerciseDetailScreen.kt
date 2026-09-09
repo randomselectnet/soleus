@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,8 +25,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.soleus.office.data.model.Exercise
+import com.soleus.office.ui.motion.HareketSahnesi
+import com.soleus.office.ui.motion.fazOzeti
+import com.soleus.office.ui.motion.rememberSahneSaati
 import com.soleus.office.ui.theme.Quicksand
-import kotlinx.coroutines.delay
 
 /** Saniyeyi mm:ss biçimine çevirir. */
 fun formatSure(toplamSaniye: Int): String {
@@ -37,6 +40,8 @@ fun formatSure(toplamSaniye: Int): String {
  * Hareket detayı (Serene, bölüm kartları): başlık + rozetler → sahne →
  * sayaç (mini dikkat şeridi) → nasıl yapılır → fayda (+bilgi linki) →
  * dikkat → BİTİR + güvenlik dipnotu.
+ *
+ * Animasyon + metrik + sayaç TEK [rememberSahneSaati] saatinden beslenir (çift saat yok).
  */
 @Composable
 fun ExerciseDetailScreen(
@@ -45,16 +50,15 @@ fun ExerciseDetailScreen(
     onOpenBilgi: (String) -> Unit = {}
 ) {
     val toplam = exercise.durationSec.coerceAtLeast(1)
-    var kalan by remember(exercise.id) { mutableIntStateOf(exercise.durationSec) }
     var calisiyor by remember(exercise.id) { mutableStateOf(false) }
-    LaunchedEffect(calisiyor, exercise.id) {
-        while (calisiyor && kalan > 0) {
-            delay(1000)
-            kalan--
-        }
-        if (kalan == 0) calisiyor = false
+    var sifirlama by remember(exercise.id) { mutableIntStateOf(0) }
+    // TEK saat: key değişince (bitiş sonrası yeniden başlatma) sıfırlanır.
+    val elapsedMs = key(exercise.id, sifirlama) { rememberSahneSaati(calisiyor = calisiyor) }
+    val toplamKalanSn = (toplam - (elapsedMs / 1000).toInt()).coerceAtLeast(0)
+    LaunchedEffect(elapsedMs, toplam) {
+        if (elapsedMs >= toplam * 1000L) calisiyor = false
     }
-    val ilerleme = 1f - kalan.toFloat() / toplam
+    val faz = remember(exercise.id, elapsedMs) { fazOzeti(exercise.id, elapsedMs) }
 
     Column(
         modifier = Modifier
@@ -83,20 +87,26 @@ fun ExerciseDetailScreen(
                 ZorlukRozeti(zorluk = exercise.zorluk)
             }
         }
-        // 2. Sahne.
-        SahneKarti(
-            trName = exercise.trName,
-            animationAsset = exercise.animationAsset
+        // 2. Sahne (prosedürel, tek saatten).
+        HareketSahnesi(
+            id = exercise.id,
+            elapsedMs = elapsedMs
         )
-        // 3. Sayaç (mini dikkat şeridi dahil).
+        // 3. Sayaç (aynı fazdan: faz adı + sayaç metni + tekrar halkası + toplam kalan).
         SayacKarti(
-            ilerleme = ilerleme,
-            kalanMetin = formatSure(kalan),
+            fazAdi = faz.fazAdi,
+            sayacMetni = faz.sayacMetni,
+            tekrarIci = faz.tekrarIci,
+            toplamKalanMetin = formatSure(toplamKalanSn),
             calisiyor = calisiyor,
             dikkatKisa = exercise.dikkatKisa,
             onBaslatDuraklat = {
-                if (kalan == 0) kalan = toplam
-                calisiyor = !calisiyor
+                if (toplamKalanSn == 0) {
+                    sifirlama++
+                    calisiyor = true
+                } else {
+                    calisiyor = !calisiyor
+                }
             }
         )
         // 4. Nasıl yapılır.

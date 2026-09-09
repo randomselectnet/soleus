@@ -63,4 +63,14 @@ class ContentLoaderTest {
             assertTrue("${e.id}: zorluk ${e.zorluk} aralık dışı", e.zorluk in 1..3)
         }
     }
+
+    @Test fun sema_animationAssetYok() {
+        // Prosedürel sahne tasfiyesi sonrası: ham JSON'da animationAsset anahtarı kalmamalı.
+        assertFalse(
+            "exercises_tr.json animationAsset içeriyor",
+            contentJson().contains("animationAsset")
+        )
+        // Şema yine de 11 egzersiz parse etmeli.
+        assertEquals(11, ContentLoader.parseJson(contentJson()).size)
+    }
 }

@@ -6,14 +6,25 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -25,20 +36,154 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.soleus.office.ui.theme.Kagit
+import com.soleus.office.ui.theme.Quicksand
+import com.soleus.office.ui.theme.SereneCard
+import com.soleus.office.ui.theme.SerenePrimary
+import kotlinx.coroutines.launch
 
 /**
- * Karşılama ekranı: bildirim izni açıklaması (TR) + izin isteği.
- * Reddedilirse uygulama içi banner + Ayarlar deep-link gösterilir.
+ * Karşılama: tek rota içinde yatay pager (3 sayfa) + koşullu izin adımı.
+ * NavGraph guard ve onboarding_done mantığı değişmez.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
-    onGrant: () -> Unit = {}
+    onGrant: () -> Unit = {},
+    onSilentStart: () -> Unit = onGrant
+) {
+    var adim by rememberSaveable { mutableStateOf(KarsilamaAdimi.SAYFA_1) }
+    val pagerState = rememberPagerState(pageCount = { KARSILAMA_SAYFALARI.size })
+    val kapsam = rememberCoroutineScope()
+
+    // Sistem-geri: izindeyken sayfa 3'e, sayfalardayken önceki sayfaya döner.
+    BackHandler(enabled = adim == KarsilamaAdimi.IZIN) {
+        adim = KarsilamaAdimi.SAYFA_3
+    }
+    BackHandler(enabled = adim != KarsilamaAdimi.IZIN && pagerState.currentPage > 0) {
+        kapsam.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        if (adim == KarsilamaAdimi.IZIN) {
+            IzinAdimi(
+                onGrant = onGrant,
+                onSilentStart = onSilentStart
+            )
+        } else {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxWidth()
+            ) { sayfa ->
+                KarsilamaSayfaIcerigi(
+                    sayfa = KARSILAMA_SAYFALARI[sayfa],
+                    sayfaNo = sayfa,
+                    onAtla = onGrant,
+                    onCta = { adim = KarsilamaAdimi.IZIN }
+                )
+            }
+            SayfaNoktalari(sayfa = pagerState.currentPage, toplam = KARSILAMA_SAYFALARI.size)
+        }
+    }
+}
+
+@Composable
+private fun KarsilamaSayfaIcerigi(
+    sayfa: KarsilamaSayfasi,
+    sayfaNo: Int,
+    onAtla: () -> Unit,
+    onCta: () -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = sayfa.baslik,
+            style = MaterialTheme.typography.headlineLarge,
+            fontFamily = Quicksand
+        )
+        SereneCard(modifier = Modifier.fillMaxWidth()) {
+            when (sayfaNo) {
+                0 -> EnerjiCubuguGorseli()
+                1 -> NefesHalkasiTeaser()
+                else -> UcIkonSirasi()
+            }
+        }
+        sayfa.govde.forEach { cumle ->
+            Text(
+                text = cumle,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+        if (sayfa.gecis.isNotBlank()) {
+            Text(
+                text = sayfa.gecis,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+        if (sayfaNo == KARSILAMA_SAYFALARI.size - 1) {
+            Button(
+                onClick = onCta,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 48.dp)
+            ) {
+                Text(text = CTA_UZUN)
+            }
+        }
+        TextButton(
+            onClick = onAtla,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp)
+        ) {
+            Text(text = "Atla")
+        }
+    }
+}
+
+/** 3 nokta ilerleme göstergesi (izin ekranında yok). */
+@Composable
+private fun SayfaNoktalari(sayfa: Int, toplam: Int) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        repeat(toplam) { i ->
+            Box(
+                modifier = Modifier
+                    .size(if (i == sayfa) 10.dp else 8.dp)
+                    .clip(CircleShape)
+                    .background(
+                        if (i == sayfa) SerenePrimary
+                        else SerenePrimary.copy(alpha = 0.25f)
+                    )
+            )
+        }
+    }
+}
+
+/** İzin adımı: başlık + 1 cümle gerekçe + birincil/ikincil buton + ret kartı. */
+@Composable
+private fun IzinAdimi(
+    onGrant: () -> Unit,
+    onSilentStart: () -> Unit
 ) {
     val ctx = LocalContext.current
     val needsPermission = Build.VERSION.SDK_INT >= 33
@@ -62,19 +207,17 @@ fun OnboardingScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
-            text = "Hoş geldin",
-            style = MaterialTheme.typography.displayLarge
+            text = IZIN_BASLIK,
+            style = MaterialTheme.typography.headlineLarge,
+            fontFamily = Quicksand
         )
+        SereneCard(modifier = Modifier.fillMaxWidth()) {
+            ZilBaloncukGorseli()
+        }
         Text(
-            text = "Soleus, mesai saatlerinde her saat başı kısa bir ofis hareketi hatırlatır. " +
-                "Hatırlatmalar için bildirim izni gerekli.",
+            text = IZIN_GEREKCE,
             style = MaterialTheme.typography.bodyLarge
         )
         Button(
@@ -86,7 +229,7 @@ fun OnboardingScreen(
                 .fillMaxWidth()
                 .heightIn(min = 48.dp)
         ) {
-            Text(text = "Bildirimlere izin ver")
+            Text(text = IZIN_BUTON)
         }
         if (denied) {
             Card(
@@ -119,12 +262,12 @@ fun OnboardingScreen(
             }
         }
         TextButton(
-            onClick = onGrant,
+            onClick = onSilentStart,
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 48.dp)
         ) {
-            Text(text = "Atla")
+            Text(text = IZIN_RET_BUTON)
         }
     }
 }

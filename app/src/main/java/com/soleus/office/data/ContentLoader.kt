@@ -24,7 +24,6 @@ object ContentLoader {
                 durationSec = o.getInt("durationSec"),
                 benefit = o.getString("benefit"),
                 caution = o.getString("caution"),
-                animationAsset = o.getString("animationAsset"),
                 faydaKisa = o.getString("faydaKisa"),
                 dikkatKisa = o.getString("dikkatKisa"),
                 dozajEtiket = o.getString("dozajEtiket"),

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -18,22 +17,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.soleus.office.ui.info.GuvenlikDipnotu
 import com.soleus.office.ui.theme.Quicksand
-import com.soleus.office.ui.theme.SereneBackground
 import com.soleus.office.ui.theme.SereneCard
 import com.soleus.office.ui.theme.SereneError
 import com.soleus.office.ui.theme.SereneOnTertiaryContainer
@@ -98,67 +87,13 @@ fun ZorlukRozeti(zorluk: Int, modifier: Modifier = Modifier) {
     }
 }
 
-/** Krem panel üstünde Lottie; reduce-motion'da statik ilk kare. */
-@Composable
-fun SahneKarti(
-    trName: String,
-    animationAsset: String,
-    modifier: Modifier = Modifier
-) {
-    SereneCard(modifier = modifier.fillMaxWidth()) {
-        val context = LocalContext.current
-        val animasyonuAzalt = remember {
-            try {
-                android.provider.Settings.Global.getFloat(
-                    context.contentResolver,
-                    android.provider.Settings.Global.ANIMATOR_DURATION_SCALE,
-                    1f
-                ) == 0f
-            } catch (_: Exception) {
-                false
-            }
-        }
-        val composition by rememberLottieComposition(
-            LottieCompositionSpec.Asset(animationAsset)
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(SereneBackground)
-                .semantics { contentDescription = trName },
-            contentAlignment = Alignment.Center
-        ) {
-            if (composition != null) {
-                if (animasyonuAzalt) {
-                    LottieAnimation(
-                        composition = composition,
-                        progress = { 0f },
-                        modifier = Modifier.size(200.dp)
-                    )
-                } else {
-                    LottieAnimation(
-                        composition = composition,
-                        iterations = LottieConstants.IterateForever,
-                        modifier = Modifier.size(200.dp)
-                    )
-                }
-            } else {
-                Text(
-                    text = "Animasyon yükleniyor\n$animationAsset",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-        }
-    }
-}
-
-/** Sayaç kartı: MotionRing + süre + BAŞLAT/DURAKLAT + mini dikkat şeridi. */
+/** Sayaç kartı: faz adı + sayaç metni + tekrar halkası + toplam kalan + BAŞLAT/DURAKLAT + mini dikkat şeridi. */
 @Composable
 fun SayacKarti(
-    ilerleme: Float,
-    kalanMetin: String,
+    fazAdi: String,
+    sayacMetni: String,
+    tekrarIci: Float,
+    toplamKalanMetin: String,
     calisiyor: Boolean,
     dikkatKisa: String,
     onBaslatDuraklat: () -> Unit,
@@ -170,9 +105,18 @@ fun SayacKarti(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-            MotionRing(progress = ilerleme)
+            MotionRing(progress = tekrarIci)
             Text(
-                text = kalanMetin,
+                text = fazAdi,
+                style = MaterialTheme.typography.headlineMedium,
+                fontFamily = Quicksand
+            )
+            Text(
+                text = sayacMetni,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = toplamKalanMetin,
                 style = MaterialTheme.typography.headlineLarge,
                 fontFamily = Quicksand
             )

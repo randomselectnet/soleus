@@ -21,7 +21,7 @@ android {
 
     buildTypes {
         release {
-            // V1 kararı: küçültme/kaynak kırpma kapalı (Lottie/asset güvenliği için).
+            // V1 kararı: küçültme/kaynak kırpma kapalı (asset güvenliği için).
             isMinifyEnabled = false
             isShrinkResources = false
         }
@@ -62,7 +62,6 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
 
     implementation("androidx.work:work-runtime-ktx:2.9.0")
-    implementation("com.airbnb.android:lottie-compose:6.5.2")
 
     testImplementation("junit:junit:4.13.2")
     // JVM unit testlerinde gerçek org.json (android.jar stub'ı "not mocked" atar).
