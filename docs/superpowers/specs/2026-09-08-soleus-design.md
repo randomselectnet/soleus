@@ -70,6 +70,7 @@ Ekranlar:
 Animasyon stili (11 Lottie, el yapımı, v5.7.4, 200x200, 30fps, 2sn loop):
 - Zemin #F7FAF8 (şeffaf; ekran kartı beyazı üstünde sahne şeridi olarak krem panel çizilir), figür çizgileri #181C1C, objeler (sandalye/koltuk) #8C4E35 dolgu, zemin şeridi #8DAA91, vurgu #DC9073. Beyaz dolgu sadece göz akı gibi çerçeveli detaylarda.
 - Eski geometrik set tamamen değiştirilir; dosya adları (animationAsset) aynı kalır.
+- Yakın plan sahnelerde (göz/bilek/ayak bileği) zemin şeridi aranmaz; figür dili ve palet korunur.
 
 ## 7b. Davranış ekleri (revizyon)
 - Egzersiz tercihi: exercise_prefs(exerciseId PK, enabled) — kapalı hareket rotasyona girmez; tümü kapalıysa rotasyon tüm listeye düşer (fail-safe).
