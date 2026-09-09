@@ -38,12 +38,13 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         refresh()
     }
 
-    /** Kayıtlı ayarı yeniden oku (null = henüz yüklenmedi). */
+    /** Kayıtlı ayarı oku; kayıt yoksa varsayılanı yazıp onu yayınla (ekran asla beklemez). */
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
             _settings.value = runCatching {
-                AppDb.get(appCtx).settingsDao().get()
-            }.getOrNull()
+                val dao = AppDb.get(appCtx).settingsDao()
+                dao.get() ?: ReminderSettings().also { dao.upsert(it) }
+            }.getOrNull() ?: ReminderSettings()
             _quiet.value = runCatching { QuietStore.load(appCtx) }
                 .getOrDefault(QuietPrefs())
         }
