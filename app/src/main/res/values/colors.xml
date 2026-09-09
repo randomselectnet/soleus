@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Soleus renk paleti (Compose tarafındaki Theme.kt sabitleriyle aynı değerler). -->
-    <color name="kagit">#FAF6EF</color>
-    <color name="murekkep">#1A1E1B</color>
+    <!-- Bildirim rengi (Compose tarafındaki Theme.kt aksan sabitiyle aynı değer). -->
     <color name="aksan">#FF5C1A</color>
 </resources>

@@ -50,7 +50,8 @@ fun SettingsScreen(
     workStartMin: Int = 540,
     workEndMin: Int = 1080,
     intervalMin: Int = 60,
-    onSave: (Int, Int, Int, () -> Unit) -> Unit = { _, _, _, done -> done() },
+    onSave: (Int, Int, Int, (Boolean) -> Unit) -> Unit = { _, _, _, done -> done(true) },
+    saveError: String? = null,
     onSaved: () -> Unit = {}
 ) {
     var start by remember(workStartMin) { mutableIntStateOf(workStartMin) }
@@ -128,10 +129,12 @@ fun SettingsScreen(
             onClick = {
                 if (!valid || saving) return@Button
                 saving = true
-                onSave(start, end, interval) {
+                onSave(start, end, interval) { ok ->
                     saving = false
-                    saved = true
-                    onSaved()
+                    if (ok) {
+                        saved = true
+                        onSaved()
+                    }
                 }
             },
             enabled = valid && !saving,
@@ -144,6 +147,13 @@ fun SettingsScreen(
         if (saved) {
             Text(
                 text = "Kaydedildi. Hatırlatmalar güncellendi.",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+        if (saveError != null) {
+            Text(
+                text = saveError,
+                color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyLarge
             )
         }

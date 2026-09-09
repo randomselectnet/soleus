@@ -25,6 +25,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     private val _settings = MutableStateFlow<ReminderSettings?>(null)
     val settings: StateFlow<ReminderSettings?> = _settings.asStateFlow()
 
+    private val _saveError = MutableStateFlow<String?>(null)
+    /** Son kaydetme hatası (null = hata yok). */
+    val saveError: StateFlow<String?> = _saveError.asStateFlow()
+
     init {
         refresh()
     }
@@ -40,24 +44,38 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     /**
      * Ayarı kaydet: Room upsert + saatlik hatırlatıcıyı güncelle.
-     * [onSaved] ana thread'te çağrılır.
+     * [onResult] ana thread'te çağrılır: true = kaydedildi, false = hata.
      */
-    fun save(workStartMin: Int, workEndMin: Int, intervalMin: Int, onSaved: () -> Unit = {}) {
+    fun save(
+        workStartMin: Int,
+        workEndMin: Int,
+        intervalMin: Int,
+        onResult: (Boolean) -> Unit = {}
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             val updated = ReminderSettings(
                 workStartMin = workStartMin,
                 workEndMin = workEndMin,
                 intervalMin = intervalMin
             )
-            runCatching { AppDb.get(appCtx).settingsDao().upsert(updated) }
-            _settings.value = updated
-            HourlyReminderWorker.scheduleHourly(
-                appCtx,
-                intervalMin.toLong(),
-                workStartMin,
-                workEndMin
-            )
-            withContext(Dispatchers.Main) { onSaved() }
+            val ok = runCatching {
+                AppDb.get(appCtx).settingsDao().upsert(updated)
+            }.isSuccess
+            withContext(Dispatchers.Main) {
+                if (ok) {
+                    _saveError.value = null
+                    _settings.value = updated
+                    HourlyReminderWorker.scheduleHourly(
+                        appCtx,
+                        intervalMin.toLong(),
+                        workStartMin,
+                        workEndMin
+                    )
+                } else {
+                    _saveError.value = "Ayar kaydedilemedi. Tekrar deneyin."
+                }
+                onResult(ok)
+            }
         }
     }
 }

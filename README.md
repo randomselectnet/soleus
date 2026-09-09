@@ -36,8 +36,9 @@ uyumlu saatlik bildirimlerle birlikte gelir.
 - **UI:** Jetpack Compose + Material3, Navigation Compose.
 - **Durum yönetimi (MVVM):** `ExerciseViewModel` (liste + streak),
   `StatsViewModel` (streak + haftalık sayılar), `SettingsViewModel`
-  (ayar durumu + kaydetme). Ekranlar saf UI'dır; veri okuma/yazma
-  ViewModel içindedir.
+  (ayar durumu + kaydetme). Ekranlar yalnızca render ve etkileşim
+  iletiminden sorumludur; veri okuma/yazma ve yan etkiler
+  ViewModel ve worker katmanındadır.
 - **Veri:** Room (`session_log`, `reminder_settings`), `ContentLoader`
   ile asset'ten JSON içerik yükleme.
 - **Arka plan:** `HourlyReminderWorker` (WorkManager) + `NotificationHelper`

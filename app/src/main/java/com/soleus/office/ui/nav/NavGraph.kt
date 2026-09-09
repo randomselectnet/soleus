@@ -151,8 +151,9 @@ fun NavGraph(
                     workStartMin = a.workStartMin,
                     workEndMin = a.workEndMin,
                     intervalMin = a.intervalMin,
+                    saveError = settingsVm.saveError.collectAsState().value,
                     onSave = { start, end, interval, done ->
-                        settingsVm.save(start, end, interval) { done() }
+                        settingsVm.save(start, end, interval) { done(it) }
                     },
                     onSaved = { navController.popBackStack() }
                 )
