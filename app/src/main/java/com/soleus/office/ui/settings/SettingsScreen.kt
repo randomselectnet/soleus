@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.HourglassEmpty
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.AlertDialog
@@ -47,6 +48,9 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.soleus.office.data.QuietPrefs
+import com.soleus.office.ui.info.BILGI_SAYFA_BASLIKLARI
+import com.soleus.office.ui.info.BILGI_SAYFA_IDS
+import com.soleus.office.ui.info.GuvenlikDipnotu
 import com.soleus.office.ui.theme.Quicksand
 import com.soleus.office.ui.theme.SereneCard
 import com.soleus.office.ui.theme.SerenePillButton
@@ -178,7 +182,8 @@ fun SettingsScreen(
     onSave: (Int, Int, Int, QuietPrefs, (Boolean) -> Unit) -> Unit =
         { _, _, _, _, done -> done(true) },
     saveError: String? = null,
-    onSaved: () -> Unit = {}
+    onSaved: () -> Unit = {},
+    onOpenBilgi: (String) -> Unit = {}
 ) {
     var start by remember(workStartMin) { mutableIntStateOf(workStartMin) }
     var end by remember(workEndMin) { mutableIntStateOf(workEndMin) }
@@ -366,6 +371,40 @@ fun SettingsScreen(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
+                }
+            }
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                text = "Bilgi & Güvenlik",
+                style = MaterialTheme.typography.headlineMedium,
+                fontFamily = Quicksand
+            )
+            SereneCard(modifier = Modifier.fillMaxWidth(), contentPadding = 16.dp) {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    BILGI_SAYFA_IDS.forEach { sayfaId ->
+                        RitimSatiri(
+                            ikon = Icons.Filled.Info,
+                            baslik = BILGI_SAYFA_BASLIKLARI[sayfaId].orEmpty(),
+                            alt = "Oku",
+                            secili = false,
+                            onClick = { onOpenBilgi(sayfaId) }
+                        )
+                    }
+                }
+            }
+            SereneCard(modifier = Modifier.fillMaxWidth(), contentPadding = 20.dp) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = "Güvenlik notu",
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Text(
+                        text = "Bu hareketler genel esenlik amaçlıdır, tedavi değildir.",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    GuvenlikDipnotu()
                 }
             }
         }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
 import androidx.compose.material.icons.automirrored.outlined.FormatListBulleted
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -15,16 +16,19 @@ import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +44,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
+import com.soleus.office.data.ContentLoader
 import com.soleus.office.domain.dueExercise
 import com.soleus.office.domain.enabledIds
 import com.soleus.office.ui.ExerciseViewModel
@@ -47,6 +52,9 @@ import com.soleus.office.ui.SettingsViewModel
 import com.soleus.office.ui.StatsViewModel
 import com.soleus.office.ui.detail.ExerciseDetailScreen
 import com.soleus.office.ui.home.HomeScreen
+import com.soleus.office.ui.info.BILGI_SAYFA_BASLIKLARI
+import com.soleus.office.ui.info.BILGI_SAYFA_IDS
+import com.soleus.office.ui.info.InfoScreen
 import com.soleus.office.ui.list.ExerciseListScreen
 import com.soleus.office.ui.onboarding.OnboardingScreen
 import com.soleus.office.ui.settings.SettingsScreen
@@ -63,8 +71,10 @@ object SoleusRotalari {
     const val DETAY = "detail/{id}"
     const val ISTATISTIK = "stats"
     const val AYARLAR = "settings"
+    const val BILGI = "bilgi/{sayfaId}"
 
     fun detay(id: String): String = "detail/$id"
+    fun bilgi(sayfaId: String): String = "bilgi/$sayfaId"
 }
 
 private data class AltSekme(
@@ -103,6 +113,28 @@ private val ALT_SEKMELER = listOf(
 
 private val UST_DUZEY_ROTALAR = ALT_SEKMELER.map { it.rota }.toSet()
 
+/** Bilgi rotası üst barı: sistem geriye ek olarak geri oklu üst bar. */
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+@Composable
+private fun BilgiUstBar(onGeri: () -> Unit) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Bilgi",
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onGeri) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Geri"
+                )
+            }
+        }
+    )
+}
+
 @Composable
 fun NavGraph(
     navController: NavHostController = rememberNavController(),
@@ -121,10 +153,18 @@ fun NavGraph(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val mevcutHedef = navBackStackEntry?.destination
     val altBarGoster = mevcutHedef?.route in UST_DUZEY_ROTALAR
+    val bilgiRotasinda = mevcutHedef?.route == SoleusRotalari.BILGI
+    val bilgiSayfalari = remember(appCtx) {
+        runCatching { ContentLoader.loadInfo(appCtx) }.getOrDefault(emptyList())
+    }
 
     Scaffold(
         topBar = {
-            if (altBarGoster) SereneHeader()
+            if (altBarGoster) {
+                SereneHeader()
+            } else if (bilgiRotasinda) {
+                BilgiUstBar(onGeri = { navController.popBackStack() })
+            }
         },
         bottomBar = {
             if (altBarGoster) {
@@ -199,15 +239,22 @@ fun NavGraph(
                 val siradakiId = runCatching { dueExercise(havuz, recent) }.getOrNull()
                 val siradaki = egzersizler.firstOrNull { it.id == siradakiId }
                 if (siradaki != null) {
+                    val gunSirasi = java.time.LocalDate.now().dayOfYear
+                    val ogrenId = BILGI_SAYFA_IDS[gunSirasi % BILGI_SAYFA_IDS.size]
                     HomeScreen(
                         nextId = siradaki.id,
                         nextName = siradaki.trName,
-                        nextDesc = siradaki.steps.firstOrNull().orEmpty(),
+                        nextDesc = siradaki.faydaKisa,
                         streak = streak,
                         doneCount = bugun,
                         totalCount = havuz.size,
+                        ogrenSayfaId = ogrenId,
+                        ogrenSayfaBaslik = BILGI_SAYFA_BASLIKLARI[ogrenId].orEmpty(),
                         onStart = {
                             navController.navigate(SoleusRotalari.detay(siradaki.id))
+                        },
+                        onOpenBilgi = { sayfaId ->
+                            navController.navigate(SoleusRotalari.bilgi(sayfaId))
                         },
                         onDone = {
                             vm.logCompletion(siradaki.id, siradaki.durationSec)
@@ -237,8 +284,18 @@ fun NavGraph(
                         onDone = {
                             vm.logCompletion(egzersiz.id, egzersiz.durationSec)
                             navController.popBackStack()
+                        },
+                        onOpenBilgi = { sayfaId ->
+                            navController.navigate(SoleusRotalari.bilgi(sayfaId))
                         }
                     )
+                }
+            }
+            composable(SoleusRotalari.BILGI) { backStackEntry ->
+                val sayfaId = backStackEntry.arguments?.getString("sayfaId").orEmpty()
+                val sayfa = bilgiSayfalari.firstOrNull { it.id == sayfaId }
+                if (sayfa != null) {
+                    InfoScreen(page = sayfa)
                 }
             }
             composable(SoleusRotalari.ISTATISTIK) {
@@ -281,7 +338,10 @@ fun NavGraph(
                         onSave = { start, end, interval, quietPrefs, done ->
                             settingsVm.save(start, end, interval, quietPrefs) { done(it) }
                         },
-                        onSaved = { navController.popBackStack() }
+                        onSaved = { navController.popBackStack() },
+                        onOpenBilgi = { sayfaId ->
+                            navController.navigate(SoleusRotalari.bilgi(sayfaId))
+                        }
                     )
                 }
             }

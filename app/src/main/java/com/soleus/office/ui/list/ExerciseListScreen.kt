@@ -104,7 +104,7 @@ fun ExerciseListScreen(
                                 overflow = TextOverflow.Ellipsis
                             )
                             Text(
-                                text = exercise.steps.firstOrNull().orEmpty(),
+                                text = exercise.faydaKisa,
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 maxLines = 1,

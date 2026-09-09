@@ -24,4 +24,43 @@ class ContentLoaderTest {
         val exercises = ContentLoader.parseJson(contentJson())
         assertEquals(11, exercises.size)
     }
+
+    @Test fun expertFields_areNonBlank() {
+        val exercises = ContentLoader.parseJson(contentJson())
+        assertEquals(11, exercises.size)
+        exercises.forEach { e ->
+            assertTrue("${e.id}: faydaKisa boş", e.faydaKisa.isNotBlank())
+            assertTrue("${e.id}: dikkatKisa boş", e.dikkatKisa.isNotBlank())
+            assertTrue("${e.id}: dozajEtiket boş", e.dozajEtiket.isNotBlank())
+            assertTrue("${e.id}: benefit boş", e.benefit.isNotBlank())
+            assertTrue("${e.id}: caution boş", e.caution.isNotBlank())
+        }
+    }
+
+    @Test fun faydaKisa_fitsNinetyChars() {
+        val exercises = ContentLoader.parseJson(contentJson())
+        exercises.forEach { e ->
+            assertTrue(
+                "${e.id}: faydaKisa ${e.faydaKisa.length} karakter (sınır 90)",
+                e.faydaKisa.length <= 90
+            )
+        }
+    }
+
+    @Test fun dikkatKisa_fitsSeventyChars() {
+        val exercises = ContentLoader.parseJson(contentJson())
+        exercises.forEach { e ->
+            assertTrue(
+                "${e.id}: dikkatKisa ${e.dikkatKisa.length} karakter (sınır 70)",
+                e.dikkatKisa.length <= 70
+            )
+        }
+    }
+
+    @Test fun zorluk_inOneToThree() {
+        val exercises = ContentLoader.parseJson(contentJson())
+        exercises.forEach { e ->
+            assertTrue("${e.id}: zorluk ${e.zorluk} aralık dışı", e.zorluk in 1..3)
+        }
+    }
 }

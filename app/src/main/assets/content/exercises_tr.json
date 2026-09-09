@@ -3,154 +3,209 @@
     "id": "soleus-pushup",
     "trName": "Soleus Push-Up",
     "steps": [
-      "Sandalyede dik oturun, ayak tabanlarınız yere tam bassın.",
-      "Topuklarınızı yerden kaldırıp parmak ucunda yükselin.",
-      "Üst noktada 1 saniye bekleyip topukları yavaşça indirin.",
-      "2 dakika boyunca veya yorulana kadar tekrarlayın."
+      "Sandalyede dik oturun, sırtınız yaslanabilir ama öne yığılmayın.",
+      "Ayak tabanlarınızın tamamı yere bassın, dizler ~90 derece olsun.",
+      "Dizlerinizi kımıldatmadan topuklarınızı yerden kaldırın, parmak uçlarında yükselin.",
+      "En üstte 1 saniye durun, sonra topukları 2–3 saniyede yavaşça indirin.",
+      "Ritmik, sessiz tempoda devam edin; omuzlarınızı kasmayın, normal nefes alın."
     ],
     "durationSec": 120,
-    "benefit": "Baldırdaki soleus kasını çalıştırarak bacak dolaşımını hızlandırır ve uzun oturuşta şişliği azaltır.",
-    "caution": "Dizlerinizde ağrı hissederseniz durun; hareketi hızlı ve zıplayarak yapmayın.",
-    "animationAsset": "lottie/soleus-pushup.json"
+    "benefit": "Baldırdaki soleus kasının ritmik kasılması kas pompası etkisiyle bacaklardaki venöz dönüşü destekler; uzun oturuşta bacaklarda oluşan ağırlık hissini hafifletmeye yardımcı olabilir.",
+    "caution": "Dizde veya Aşil tendonunda keskin/batıcı ağrı olursa durun. Zıplama, hızlı yaylanma yapmayın. Akut baldır yırtığı şüphesi, yeni diz/ayak bileği ameliyatı, pıhtı (DVT) öyküsü veya tek bacakta ani şişlik-ağrı varsa yapmayın, doktora danışın.",
+    "animationAsset": "lottie/soleus-pushup.json",
+    "faydaKisa": "Otururken bacaklardaki ağırlık hissini hafifletmeye yardımcı olur.",
+    "dikkatKisa": "Dizde keskin ağrıda durun; zıplamadan yapın.",
+    "dozajEtiket": "30–60 tekrar • ~2 dk",
+    "zorluk": 1
   },
   {
     "id": "ankle-circle-calf-raise",
     "trName": "Ayak Bileği Çevirme + Calf Raise",
     "steps": [
-      "Bir ayağınızı hafifçe yerden kaldırın.",
-      "Ayak bileğinizle her yöne 10 tur daire çizin.",
+      "Dik oturun, bir ayağınızın topuğunu hafifçe yerden kaldırın.",
+      "Ayak bileğinizle yavaşça saat yönünde 10 küçük-orta daire çizin.",
+      "Aynı ayakla saat tersi yönde 10 daire çizin.",
       "Diğer ayakla tekrarlayın.",
-      "Sonra iki ayakla 15 kez parmak ucuna yükselip inin."
+      "Sonra iki ayağınızı yere koyup 10–15 kez iki topuğu birlikte kaldırıp yavaşça indirin."
     ],
     "durationSec": 120,
-    "benefit": "Ayak bileği hareketliliğini artırır, baldırları güçlendirir ve ayak uyuşmasını önler.",
-    "caution": "Bilekte keskin ağrı olursa daireyi küçültün veya durun.",
-    "animationAsset": "lottie/ankle-circle-calf-raise.json"
+    "benefit": "Ayak bileği çevresi eklem hareketliliğini korumaya ve baldır kaslarının ritmik çalışmasıyla bacaklarda oturmaya bağlı uyuşukluk hissini azaltmaya yardımcı olabilir.",
+    "caution": "Bilekte keskin ağrı, takılma veya şişlik artarsa daireyi küçültün ya da durun. Yeni burkulma/kırık, alçılı dönem, ayak bileği protezi sonrası erken dönemde yapmayın; doktor/fizyoterapiste danışın.",
+    "animationAsset": "lottie/ankle-circle-calf-raise.json",
+    "faydaKisa": "Ayak bileğini yumuşatır, oturmaya bağlı uyuşukluğu azaltmaya yardımcı olur.",
+    "dikkatKisa": "Bilekte keskin ağrı ya da şişlik artarsa durun.",
+    "dozajEtiket": "Her ayak 20 daire • ~2 dk",
+    "zorluk": 1
   },
   {
     "id": "hip-squeeze",
     "trName": "Kalça Sıkma",
     "steps": [
-      "Sandalyede dik oturun, ayaklarınız kalça genişliğinde açık olsun.",
-      "Kalça kaslarınızı 5 saniye boyunca sıkın.",
-      "Gevşeyip derin bir nefes alın.",
-      "Toplam 10 tekrar yapın."
+      "Sandalyede dik oturun, ayaklar kalça genişliğinde, tabanlar yerde.",
+      "Burnunuzdan nefes alın.",
+      "Nefes verirken iki kalça kasınızı aynı anda sıkın — sanki sandalyeden hafifçe yükseliyormuş gibi ama kalkmayın.",
+      "5 saniye tutun, normal nefes almaya devam edin (nefes tutmayın).",
+      "Gevşeyin, bir derin nefes alın. Toplam 8–10 tekrar."
     ],
     "durationSec": 90,
-    "benefit": "Uzun oturuşta uyuyan kalça kaslarını uyandırır, bel yükünü azaltır.",
-    "caution": "Nefesinizi tutmayın; belinizi aşırı çukurlaştırmayın.",
-    "animationAsset": "lottie/hip-squeeze.json"
+    "benefit": "Uzun oturuşta az çalışan kalça kaslarının farkındalıklı kasılmasını destekler; bu, oturuşta bel çevresinde hissedilen yük hissinin dengelenmesine yardımcı olabilir.",
+    "caution": "Nefes tutmayın; beli aşırı çukurlaştırmayın, karnı hafifçe toparlayın. Akut bel ağrısı atağında, kuyruk sokumu ağrısında veya yeni kalça protezi sonrası dönemde zorlamayın; doktora danışın. Hamilelikte uzun süreli sıkma-tutma yerine kısa (3 sn) yumuşak kasılmalar tercih edin, şüpheniz varsa doktorunuza sorun.",
+    "animationAsset": "lottie/hip-squeeze.json",
+    "faydaKisa": "Uzun oturmada sessizleşen kalça kaslarını nazikçe uyandırır.",
+    "dikkatKisa": "Nefes tutmayın; beli çukurlaştırmadan yapın.",
+    "dozajEtiket": "10×5 sn • ~90 sn",
+    "zorluk": 1
   },
   {
     "id": "seated-leg-extension",
     "trName": "Oturarak Diz Uzatma",
     "steps": [
-      "Sandalyenin önüne doğru oturun, sırtınız dik olsun.",
-      "Bir bacağınızı diz hizasına kadar düz uzatıp 3 saniye tutun.",
-      "Yavaşça indirip diğer bacakla tekrarlayın.",
-      "Her bacakla 10 tekrar yapın."
+      "Sandalyede hafifçe öne kayın, sırt dik, eller sandalyeden veya dizlerden destek alabilir.",
+      "Bir bacağınızı yavaşça öne doğru düzleştirin; hedef diz hizası, parmak ucu tavana dönük.",
+      "Üst noktada uyluk ön kasınızı hissedip 2–3 saniye tutun.",
+      "3 saniyede yavaşça indirin.",
+      "Diğer bacakla dönüşümlü devam edin, her bacak 8–10 tekrar."
     ],
     "durationSec": 90,
-    "benefit": "Ön uyluk kaslarını güçlendirir, diz çevresini destekler.",
-    "caution": "Dizinizde batma hissederseniz bacağı tam düzeltmeyin, açıyı küçültün.",
-    "animationAsset": "lottie/seated-leg-extension.json"
+    "benefit": "Uyluk önü (kuadriseps) kaslarının kontrollü çalışması diz çevresi kas desteğini korumaya yardımcı olabilir.",
+    "caution": "Dizde batma, kilitlenme veya boşalma hissi olursa bacağı tam düzeltmeyin, açıyı yarıda tutun veya durun. Yeni diz ameliyatı/protezi, akut diz şişliği, menisküs veya bağ yaralanması şüphesinde yapmayın; doktora danışın. Sandalye tekerlekliyse kaymaya karşı duvara dayayın veya frenini kilitleyin.",
+    "animationAsset": "lottie/seated-leg-extension.json",
+    "faydaKisa": "Diz çevresini destekleyen uyluk önü kaslarını çalıştırır.",
+    "dikkatKisa": "Dizde batma olursa açıyı küçültün ya da durun.",
+    "dozajEtiket": "Her bacak 8–10 • ~90 sn",
+    "zorluk": 2
   },
   {
     "id": "neck-side-stretch",
     "trName": "Boyun Yan Esnetme",
     "steps": [
-      "Dik oturun, omuzlarınızı gevşetin.",
-      "Sağ kulağınızı sağ omzunuza yaklaştırın, 20 saniye tutun.",
-      "Aynı hareketi sol tarafa yapın.",
-      "Esneme sırasında omuzlarınızı kaldırmayın."
+      "Dik oturun, iki omzunuzu gevşetip aşağı bırakın.",
+      "Başınızı yavaşça sağa eğin — sağ kulağınız sağ omza yaklaşsın, omzu kulağa kaldırmayın.",
+      "Sol boyun yanında hafif gerilme hissedip 15–20 saniye bekleyin, sakin nefes alın.",
+      "Başınızı ortaya getirin, aynı işlemi sola yapın.",
+      "Her taraf 2 tur. Esneme sırasında başı elle çekmeyin."
     ],
     "durationSec": 60,
-    "benefit": "Boyun yan kaslarındaki gerginliği çözer, ekran başında oluşan tutulmaları rahatlatır.",
-    "caution": "Boynunuzu zorlayarak çekmeyin; baş dönmesi olursa durun.",
-    "animationAsset": "lottie/neck-side-stretch.json"
+    "benefit": "Boyun yan kaslarındaki statik ekran duruşuna bağlı gerginlik hissinin gevşemesine yardımcı olabilir.",
+    "caution": "Boynu elle zorlayarak çekmeyin, hızlı çevirme yapmayın. Boyun fıtığı tanısı, kola vuran ağrı/uyuşma, baş dönmesi, tansiyon dengesizliği varsa veya yakın zamanda boyun travması geçirdiyseniz yapmayın; doktora danışın. Baş dönmesi, mide bulantısı, görme bulanıklığı olursa hemen durun.",
+    "animationAsset": "lottie/neck-side-stretch.json",
+    "faydaKisa": "Ekrana bakmaktan gerilen boyun yanlarını gevşetmeye yardımcı olur.",
+    "dikkatKisa": "Boynu elle çekmeyin; baş dönerse durun.",
+    "dozajEtiket": "Her taraf 2 tur • ~90 sn",
+    "zorluk": 1
   },
   {
     "id": "shoulder-shrug-roll",
-    "trName": "Omuz Silkme + Roll",
+    "trName": "Omuz Silkme + Çevirme",
     "steps": [
-      "Omuzlarınızı kulaklarınıza doğru kaldırıp 2 saniye tutun, sonra bırakın. 10 kez tekrarlayın.",
-      "Omuzlarınızla öne doğru 10 geniş daire çizin.",
-      "Aynı daireleri geriye doğru 10 kez yapın.",
-      "Hareket boyunca kollarınız gevşek kalsın."
+      "Dik oturun, kollar yanda gevşek.",
+      "Omuzlarınızı kulaklara doğru yavaşça kaldırın, 2 saniye tutun, sonra tamamen bırakın. 8–10 kez.",
+      "Omuzlarla öne doğru 8–10 yavaş, geniş daire çizin.",
+      "Aynı daireleri geriye doğru 8–10 kez yapın.",
+      "Tüm hareket boyunca çeneyi hafifçe içeri alın, diş sıkmayın."
     ],
     "durationSec": 90,
-    "benefit": "Omuz ve boyun çevresindeki birikmiş gerginliği atar, duruşu rahatlatır.",
-    "caution": "Daireleri hızlı ve sert çevirmeyin; omuzda takılma hissi olursa aralığı daraltın.",
-    "animationAsset": "lottie/shoulder-shrug-roll.json"
+    "benefit": "Omuz-kuşak çevresi kasların ritmik kasılıp gevşemesi, masa başında biriken gerginlik hissinin dağılmasına yardımcı olabilir.",
+    "caution": "Daireleri hızlı/sert çevirmeyin; omuzda takılma, çıtırtıyla birlikte ağrı veya kola vuran ağrı olursa aralığı daraltın veya durun. Yeni omuz çıkığı, kırık, donuk omuz alevlenmesi veya rotator manşet yırtığı şüphesinde yapmayın; doktora danışın.",
+    "animationAsset": "lottie/shoulder-shrug-roll.json",
+    "faydaKisa": "Omuzlarda biriken gün sonu gerginliğini dağıtmaya yardımcı olur.",
+    "dikkatKisa": "Hızlı çevirmeyin; kola vuran ağrıda durun.",
+    "dozajEtiket": "8–10 tekrar • ~90 sn",
+    "zorluk": 1
   },
   {
     "id": "scapular-squeeze",
-    "trName": "Scapular Squeeze / Göğüs Açma",
+    "trName": "Kürek Kemiği Yaklaştırma / Göğüs Açma",
     "steps": [
-      "Dik oturun, kollarınız yanda gevşek olsun.",
-      "Kürek kemiklerinizi birbirine yaklaştırıp 10 saniye tutun.",
-      "Göğsünüzü açıp derin nefes alın.",
-      "Toplam 5 tekrar yapın."
+      "Dik oturun, ayaklar yerde, kollar yanda gevşek.",
+      "Kürek kemiklerinizi arkaya ve birbirine doğru yavaşça yaklaştırın — göğsünüz hafifçe açılsın.",
+      "Omuzları kulaklara çekmeden 5–10 saniye tutun, bu sırada burnunuzdan alıp ağzınızdan sakin nefes verin.",
+      "Gevşeyip omuzları öne bırakın.",
+      "Toplam 5–6 tekrar."
     ],
     "durationSec": 60,
-    "benefit": "Kambur oturuşu düzeltir, sırt üstü kasları güçlendirir ve göğsü açar.",
-    "caution": "Belinizi aşırı çukurlaştırmayın; omuzlarınızı kulaklara çekmeyin.",
-    "animationAsset": "lottie/scapular-squeeze.json"
+    "benefit": "Sırt üstü kasların farkındalıklı çalışması, öne kapanan oturuş duruşunun düzeltilmesine ve göğüs önü gerginlik hissinin hafiflemesine yardımcı olabilir.",
+    "caution": "Beli aşırı çukurlaştırmayın; hareket sırttan gelsin, belden değil. Akut sırt kaburga ağrısı, yeni omurga kırığı/ameliyatı veya şiddetli osteoporoz varsa yapmayın; doktora danışın. Nefes darlığı hissederseniz tutma süresini kısaltın.",
+    "animationAsset": "lottie/scapular-squeeze.json",
+    "faydaKisa": "Öne kapanan duruşu açar, göğüsteki gerginliği hafifletir.",
+    "dikkatKisa": "Hareket sırttan gelsin; beli çukurlaştırmayın.",
+    "dozajEtiket": "5–6 tekrar • ~1 dk",
+    "zorluk": 1
   },
   {
     "id": "seated-trunk-rotation",
     "trName": "Oturarak Gövde Rotasyonu",
     "steps": [
-      "Dik oturun, ayaklarınız yerde sabit kalsın.",
-      "Kollarınızı göğsünüzde kavuşturup gövdenizi sağa çevirin, 20 saniye tutun.",
-      "Aynı hareketi sola yapın.",
-      "Dönüş sırasında kalçanızın sandalyeden kalkmamasına dikkat edin."
+      "Dik oturun, ayaklar yerde sabit, kalça sandalyede tam temas etsin.",
+      "Kollarınızı göğsünüzde kavuşturun.",
+      "Nefes vererek gövdenizi yavaşça sağa çevirin; başınız da gövdeyle dönsün.",
+      "Hafif gerilme hissettiğiniz noktada 15–20 saniye kalın, sakin nefes alın.",
+      "Ortaya dönüp sola tekrarlayın. Her taraf 2 tur."
     ],
     "durationSec": 60,
-    "benefit": "Bel ve gövde yan kaslarını esnetir, omurga hareketliliğini korur.",
-    "caution": "Dönüşü zorlamayın; belde keskin ağrı olursa durun.",
-    "animationAsset": "lottie/seated-trunk-rotation.json"
+    "benefit": "Gövde yan ve bel çevresi kasların hafif esnemesi, uzun süre sabit oturmaya bağlı gövde tutukluk hissinin azalmasına yardımcı olabilir.",
+    "caution": "Dönüşü sandalye kolundan güç alarak zorlamayın; kalça sandalyeden kalkmasın. Bel fıtığı atağı, belde bacağa vuran ağrı/uyuşma, yeni omurga ameliyatı, ileri osteoporoz veya hamilelikte (özellikle 2. trimester sonrası) derin rotasyon yapmayın; doktora danışın. Keskin bel ağrısı olursa durun.",
+    "animationAsset": "lottie/seated-trunk-rotation.json",
+    "faydaKisa": "Sabit oturmaktan tutulan gövdeyi yumuşatmaya yardımcı olur.",
+    "dikkatKisa": "Zorlayarak dönmeyin; belde keskin ağrıda durun.",
+    "dozajEtiket": "Her taraf 2 tur • ~1 dk",
+    "zorluk": 1
   },
   {
     "id": "wrist-forearm-stretch",
     "trName": "Bilek + Önkol Esnetme",
     "steps": [
-      "Bir kolunuzu öne uzatıp avucunuzu yukarı çevirin, diğer elle parmakları hafifçe gerin. 20 saniye tutun.",
-      "Avucunuzu aşağı çevirip aynı esnetmeyi 20 saniye yapın.",
+      "Bir kolunuzu öne uzatın, avuç yukarı baksın.",
+      "Diğer elinizle parmakları nazikçe aşağı-geriye doğru çekin; ön kolda hafif gerilme hissedin, 15–20 saniye tutun.",
+      "Aynı kolu avuç aşağı çevirip parmakları hafifçe kendinize çekin, 15–20 saniye tutun.",
       "Diğer kol için tekrarlayın.",
-      "Sonra 15 kez yumruk yapıp parmakları genişçe açın."
+      "Bitirişte 10–15 kez yumruk yapıp parmakları genişçe açın."
     ],
     "durationSec": 90,
-    "benefit": "Klavye kullanımından yorulan bilek ve önkol kaslarını rahatlatır.",
-    "caution": "Parmakları acıtacak kadar germeyin; bilekte uyuşma olursa durun.",
-    "animationAsset": "lottie/wrist-forearm-stretch.json"
+    "benefit": "Önkol ve bilek çevresi kasların hafif esnetilmesi ve parmakların pompalayıcı hareketi, uzun yazı yazmaya bağlı yorgunluk hissinin hafiflemesine yardımcı olabilir.",
+    "caution": "Parmakları acıtacak kadar germeyin; bilekte uyuşma, karıncalanma artışı veya keskin ağrı olursa durun. Karpal tünel tanısı, akut tendinit atağı, yeni el/bilek kırığı veya ameliyatı varsa yapmayın; doktora danışın. Dirseğe vuran ağrıda (tenisçi/golfçü dirseği şüphesi) germeyi hafifletin.",
+    "animationAsset": "lottie/wrist-forearm-stretch.json",
+    "faydaKisa": "Klavyeden yorulan bilek ve önkolu rahatlatmaya yardımcı olur.",
+    "dikkatKisa": "Acıtacak kadar germeyin; uyuşma artarsa durun.",
+    "dozajEtiket": "Her kol 2 yön • ~90 sn",
+    "zorluk": 1
   },
   {
     "id": "eye-202020-breath-444",
     "trName": "20-20-20 Göz + 4-4-4 Nefes",
     "steps": [
-      "Ekrandan uzaklaşıp en az 6 metre uzaktaki bir noktaya 20 saniye bakın.",
-      "Gözlerinizi yavaşça 3 kez kırpıp göz kaslarını gevşetin.",
-      "Burnunuzdan 4 sayarak nefes alın, 4 sayarak tutun, 4 sayarak verin.",
-      "Nefes döngüsünü 60 saniye boyunca sürdürün."
+      "Ekrandan gözlerinizi ayırın, en az 6 metre uzaktaki bir noktaya (pencere, duvar saati) bakın, 20 saniye.",
+      "Bu sırada gözlerinizi 3–4 kez yavaşça kırpın, gözleri ovuşturmayın.",
+      "Sonra bakışınızı yakına getirin. Burnunuzdan 4 sayıda nefes alın.",
+      "4 sayı tutun, 4 sayıda ağızdan/burundan sakince verin.",
+      "Bu nefes döngüsünü ~60 saniye sürdürün (yaklaşık 4–5 tur)."
     ],
     "durationSec": 60,
-    "benefit": "Göz yorgunluğunu azaltır, kısa nefes molasıyla zihinsel tazelenme sağlar.",
-    "caution": "Baş dönmesi hissederseniz nefes temposunu yavaşlatın ve normal nefese dönün.",
-    "animationAsset": "lottie/eye-202020-breath-444.json"
+    "benefit": "Uzağa bakış ve düzenli kırpma gözlerdeki yorgunluk hissini hafifletmeye; yavaş ritmik nefes ise kısa zihinsel tazelenme sağlamaya yardımcı olabilir.",
+    "caution": "Nefes tutma sırasında baş dönmesi, çarpıntı veya rahatsızlık hissederseniz tutmayı bırakıp normal nefese dönün. Ciddi göz hastalığı (glokom vb.), yakın göz ameliyatı, kontrolsüz tansiyon/kalp hastalığı veya panik bozukluk alevlenmesinde nefes tutmayı atlayın; sadece sakin nefes + uzak bakış yapın, şüphenizde doktora danışın. Kontakt lensle göz ovuşturmayın.",
+    "animationAsset": "lottie/eye-202020-breath-444.json",
+    "faydaKisa": "Yorulan gözleri dinlendirir, kısa bir zihinsel tazelenme verir.",
+    "dikkatKisa": "Baş dönerse tutmayı bırakıp normal nefese dönün.",
+    "dozajEtiket": "20 sn bakış + nefes • ~90 sn",
+    "zorluk": 1
   },
   {
     "id": "standup-mini-set",
     "trName": "Kalkınca Mini Set",
     "steps": [
-      "Ayağa kalkıp sandalyenizi arkaya itin.",
-      "10 kez squat yapın veya masaya yaslanarak 10 masa push-up yapın.",
-      "Ardından 1 dakika ofis içinde tempolu yürüyün.",
+      "Ayağa kalkıp sandalyenizi hafifçe arkaya itin, çevrenizde kaymayan zemin olduğunu kontrol edin.",
+      "Ayaklar omuz genişliğinde, yarım squat: dizler ayak parmaklarını geçmeyecek şekilde 8–10 kez yavaşça çöküp kalkın.",
+      "Alternatif/ek: masaya ellerinizi koyup vücut düz bir çizgide 8–10 masa push-up (duvara karşı daha sessiz ve kolay olur).",
+      "Ardından ofis içinde 45–60 saniye tempolu ama sessiz yürüyün (topukları vurmadan).",
       "Yerine oturup bir bardak su için."
     ],
     "durationSec": 90,
-    "benefit": "Uzun oturuşu böler, bacakları çalıştırır ve kan dolaşımını canlandırır.",
-    "caution": "Sessiz ortamda gürültü çıkarmamaya dikkat edin; diz ağrısında squat derinliğini azaltın.",
-    "animationAsset": "lottie/standup-mini-set.json"
+    "benefit": "Kısa süreli ayağa kalkma ve büyük kas gruplarının çalışması, uzun kesintisiz oturuşu bölmeye ve bacaklarda dolaşımın canlanmasına yardımcı olabilir.",
+    "caution": "Squat derinliğini diz ağrısına göre ayarlayın; dizde batma, boşalma veya şişlik varsa squat yerine sadece yürüyüş yapın. Diz protezi sonrası erken dönem, akut bel ağrısı, baş dönmesi/tansiyon düşüklüğü, denge sorunu varsa destekli (duvar/masa) yapın veya yürüyüşle sınırlayın; şüphenizde doktora danışın. Sessiz ortamda zıplama/koşma yok; terliksiz kaygan zeminde dikkat edin.",
+    "animationAsset": "lottie/standup-mini-set.json",
+    "faydaKisa": "Uzun oturuşu böler, bacaklara canlılık katar.",
+    "dikkatKisa": "Diz ağrırsa çömelmeden yürüyün; destek alın.",
+    "dozajEtiket": "10 squat + yürüyüş • ~2 dk",
+    "zorluk": 2
   }
 ]

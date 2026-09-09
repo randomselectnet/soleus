@@ -62,7 +62,10 @@ fun HomeScreen(
     doneCount: Int = 0,
     totalCount: Int = 1,
     currentHour: Int = LocalTime.now().hour,
+    ogrenSayfaId: String = "mikro-hareketler",
+    ogrenSayfaBaslik: String = "Mikro hareketler neden işe yarıyor?",
     onStart: () -> Unit = {},
+    onOpenBilgi: (String) -> Unit = {},
     onDone: () -> Unit
 ) {
     var tamamlandi by remember(nextId) { mutableStateOf(false) }
@@ -129,6 +132,39 @@ fun HomeScreen(
                         onDone()
                     }
                 )
+            }
+        }
+
+        SereneCard(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = 16.dp
+        ) {
+            // Öğren kartı: odak kartı ile ilerleme kartı arasında ince giriş.
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    Text(
+                        text = "Öğren",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = SerenePrimary
+                    )
+                    Text(
+                        text = ogrenSayfaBaslik,
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
+                TextButton(onClick = { onOpenBilgi(ogrenSayfaId) }) {
+                    Text(
+                        text = "Oku →",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = SereneTertiary
+                    )
+                }
             }
         }
 
