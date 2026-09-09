@@ -46,13 +46,34 @@ Single-Activity Compose, MVVM + Clean, manuel DI.
 ## 6. Veri Akışı
 ReminderSettings(workStart=09:00, workEnd=18:00, intervalMin=60, quietEnabled) -> WorkManager -> rotasyondan o saatin egzersizini seç -> Notification ("Soleus push-up zamanı - 2 dk") -> tap -> Detail -> Başlat(60 sn timer + animasyon) -> Bitir -> SessionLog(timestamp, exerciseId, durationDone) -> streak/günlük hedef güncellenir.
 
-## 7. UI / Frontend-Design Yönü
-Ton: editorial calm + kinetic playful. Klinik mavi/beyaz yok.
-Renk: kağıt #FAF6EF, mürekkep #1A1E1B, aksan soleus turuncusu #FF5C1A.
-Tipografi: display serif (örn. Fraunces) + body humanist sans (örn. Instrument Sans). Inter/Roboto/Space Grotesk yok.
-İmza detayı: nefesle büyüyen hareket halkası timer + staggered kart girişi.
-Ekranlar: Bugün / Hareketler / İstatistik / Ayarlar.
-Erişilebilirlik: min 44dp dokunma, dinamik yazı boyutu, animasyonu azalt ayarına saygı.
+## 7. UI / Design System — Serene Habit (2026-09-09 revizyonu)
+Referans: Stitch SimpleHealth (reminders, today_s_nudge, manage_habits, your_journey) + çizgi-figür GIF stili.
+Felsefe: "Digital Quiet" — yumuşak minimalizm, keskinlik yok, davetkâr etkileşimler.
+
+Renk (Material3 lightColorScheme):
+- background #F7FAF8 (surface), onBackground #181C1C (yumuşak kömür, saf siyah yok)
+- surface #FFFFFF (kartlar), primary #4A654F (adaçayı), onPrimary #FFFFFF
+- primary-fixed #CCEACF (ikon balonları), tertiary #8C4E35 (terracotta, streak/vurgu), tertiaryContainer #DC9073
+- outline #737972, outlineVariant #C2C8C0, surfaceContainerLow #F1F4F2
+Tipografi: başlıklar Quicksand 600 (indirilebilir font), gövde/etiket Inter 400/500/600. Ağır (Black) ağırlık yok.
+Şekiller: kart 32dp radius + bordürsüz + yumuşak gölge; buton tam hap; toggle hap; progress 12dp kalın yuvarlak.
+Yerleşim: tek sütun, kenar 24dp, bölümler arası geniş boşluk; alt navigasyon 4 sekme: Bugün / Hareketler / Geçmiş / Ayarlar.
+Erişilebilirlik: min 48dp dokunma, reduce-motion'a saygı, dinamik yazı.
+
+Ekranlar:
+- Bugün (today_s_nudge): saate göre selamlama ("Günaydın/Tünaydın/İyi akşamlar. Bu saatin odağı."), ikon balonlu (açık yeşil daire) odak kartı + hap "YAPILDI" butonu, "BUGÜNÜN İLERLEMESİ x/y + streak + kalın progress bar" kartı.
+- Hareketler (manage_habits): 11 kart (ikon balonu + ad + alt açıklama + toggle). Toggle = hatırlatma rotasyonuna dahil. Tercih Room'da saklanır (exercise_prefs).
+- Geçmiş (your_journey): aylık özet kartı ("Bu ay X nazik hatırlatma"), gün-daireli ay takvimi (yeşil=tamam, terracotta=kısmi, gri=dinlenme), "nazik hatırlatma" alıntı kartı.
+- Ayarlar (reminders): "Hatırlatma ritmi" kartı (saatlik / 2 saatte bir / özel aralık seçenekleri), "Sessiz saatler" kartı (açma-kapama + başlangıç-bitiş hap seçiciler), mesai saatleri korunur.
+- Detay: GIF stili sahne (krem zemin, mürekkep çizgi figür, terracotta obje, adaçayı zemin şeridi) + adımlar + sayaç + Bitir.
+
+Animasyon stili (11 Lottie, el yapımı, v5.7.4, 200x200, 30fps, 2sn loop):
+- Zemin #F7FAF8 (şeffaf; ekran kartı beyazı üstünde sahne şeridi olarak krem panel çizilir), figür çizgileri #181C1C, objeler (sandalye/koltuk) #8C4E35 dolgu, zemin şeridi #8DAA91, vurgu #DC9073. Beyaz dolgu sadece göz akı gibi çerçeveli detaylarda.
+- Eski geometrik set tamamen değiştirilir; dosya adları (animationAsset) aynı kalır.
+
+## 7b. Davranış ekleri (revizyon)
+- Egzersiz tercihi: exercise_prefs(exerciseId PK, enabled) — kapalı hareket rotasyona girmez; tümü kapalıysa rotasyon tüm listeye düşer (fail-safe).
+- Ritmik seçenekler: interval 60 / 120 / özel (30/45/60/90/120).
 
 ## 8. Bildirim ve İzin Hataları
 - POST_NOTIFICATIONS izni onboarding'de istenir, reddedilirse in-app banner + Ayarlar deep-link.
