@@ -1,5 +1,6 @@
 package com.soleus.office.ui.list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.soleus.office.data.model.Exercise
@@ -33,12 +35,14 @@ import com.soleus.office.ui.theme.exerciseIcon
  * Her kart: ikon balonu + ad + alt açıklama + toggle (açık = adaçayı).
  * Toggle durumu Room exercise_prefs'te tutulur; satır yokluğu = açık.
  * Kapalı hareket rotasyona girmez (fail-safe: tümü kapalıysa tüm liste).
+ * Karta dokunma detay ekranını açar (animasyon + adımlar); toggle bağımsızdır.
  */
 @Composable
 fun ExerciseListScreen(
     exercises: List<Exercise>,
     disabledIds: Set<String> = emptySet(),
-    onToggle: (String, Boolean) -> Unit = { _, _ -> }
+    onToggle: (String, Boolean) -> Unit = { _, _ -> },
+    onOpen: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -65,7 +69,13 @@ fun ExerciseListScreen(
             items(exercises, key = { it.id }) { exercise ->
                 val acik = exercise.id !in disabledIds
                 SereneCard(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            role = Role.Button,
+                            onClickLabel = "Hareket detayı",
+                            onClick = { onOpen(exercise.id) }
+                        ),
                     contentPadding = 16.dp
                 ) {
                     Row(

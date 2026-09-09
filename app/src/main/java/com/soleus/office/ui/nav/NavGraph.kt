@@ -206,6 +206,9 @@ fun NavGraph(
                         streak = streak,
                         doneCount = bugun,
                         totalCount = havuz.size,
+                        onStart = {
+                            navController.navigate(SoleusRotalari.detay(siradaki.id))
+                        },
                         onDone = {
                             vm.logCompletion(siradaki.id, siradaki.durationSec)
                         }
@@ -217,7 +220,8 @@ fun NavGraph(
                 ExerciseListScreen(
                     exercises = egzersizler,
                     disabledIds = kapali,
-                    onToggle = { id, acik -> vm.setExerciseEnabled(id, acik) }
+                    onToggle = { id, acik -> vm.setExerciseEnabled(id, acik) },
+                    onOpen = { id -> navController.navigate(SoleusRotalari.detay(id)) }
                 )
             }
             composable(

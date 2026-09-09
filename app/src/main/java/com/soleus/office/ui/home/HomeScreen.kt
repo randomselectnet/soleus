@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,6 +62,7 @@ fun HomeScreen(
     doneCount: Int = 0,
     totalCount: Int = 1,
     currentHour: Int = LocalTime.now().hour,
+    onStart: () -> Unit = {},
     onDone: () -> Unit
 ) {
     var tamamlandi by remember(nextId) { mutableStateOf(false) }
@@ -111,6 +113,13 @@ fun HomeScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                TextButton(onClick = onStart) {
+                    Text(
+                        text = "Hareketi izle",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = SereneTertiary
+                    )
+                }
                 SerenePillButton(
                     text = if (tamamlandi) "TAMAMLANDI" else "YAPILDI",
                     icon = Icons.Filled.Check,
