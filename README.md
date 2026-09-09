@@ -2,15 +2,16 @@
 
 Soleus, masa başında çalışanlar için kısa ofis egzersizleri sunan ve düzenli
 hareket hatırlatmaları gönderen bir Android uygulamasıdır. 11 hareketlik Türkçe
-içerik, Lottie animasyonları, günlük seri (streak) takibi ve mesai saatlerine
-uyumlu saatlik bildirimlerle birlikte gelir.
+içerik, kodla üretilen prosedürel sahne animasyonları, günlük seri (streak)
+takibi ve mesai saatlerine uyumlu saatlik bildirimlerle birlikte gelir.
 
 ## Özellikler
 
 - **11 Türkçe ofis egzersizi:** her biri adım adım anlatım, süre, fayda ve dikkat
   notu içerir (`app/src/main/assets/content/exercises_tr.json`).
-- **Lottie animasyonları:** her harekete özel, el yapımı ve döngülü vektör
-  animasyonlar (`app/src/main/assets/lottie/`).
+- **Prosedürel sahne animasyonları:** her harekete özel, Jetpack Compose
+  Canvas ile kodla üretilen döngülü sahneler (`ui/motion/`); sayaç ve faz
+  göstergesiyle aynı saatten beslenir, animasyonu azalt ayarına saygı duyar.
 - **Saatlik hatırlatmalar:** WorkManager tabanlı bildirimler; mesai başlangıç/bitiş
   ve 30/45/60/90 dk sıklık ayarlarına uyar, mesai dışında sessiz kalır.
 - **Derin bağlantı:** bildirime dokununca ilgili hareketin detay ekranı açılır
