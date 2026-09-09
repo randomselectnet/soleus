@@ -23,17 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.soleus.office.data.db.AppDb
-import com.soleus.office.data.db.ReminderSettings
-import com.soleus.office.worker.HourlyReminderWorker
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /** İzin verilen hatırlatma sıklıkları (dk). Aralık: 30/45/60/90. */
 val ALLOWED_INTERVALS = setOf(30, 45, 60, 90)
@@ -49,7 +41,8 @@ fun formatMinutes(min: Int): String {
 
 /**
  * Ayarlar ekranı: mesai başlangıç/bitiş (TimePicker) + sıklık (30/45/60/90)
- * + kaydet -> Room upsert + [HourlyReminderWorker.scheduleHourly].
+ * + kaydet -> [onSave] (üretimde [com.soleus.office.ui.SettingsViewModel.save]:
+ * Room upsert + HourlyReminderWorker.scheduleHourly).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,10 +50,9 @@ fun SettingsScreen(
     workStartMin: Int = 540,
     workEndMin: Int = 1080,
     intervalMin: Int = 60,
+    onSave: (Int, Int, Int, () -> Unit) -> Unit = { _, _, _, done -> done() },
     onSaved: () -> Unit = {}
 ) {
-    val ctx = LocalContext.current
-    val scope = rememberCoroutineScope()
     var start by remember(workStartMin) { mutableIntStateOf(workStartMin) }
     var end by remember(workEndMin) { mutableIntStateOf(workEndMin) }
     var interval by remember(intervalMin) { mutableIntStateOf(intervalMin) }
@@ -136,22 +128,7 @@ fun SettingsScreen(
             onClick = {
                 if (!valid || saving) return@Button
                 saving = true
-                scope.launch {
-                    withContext(Dispatchers.IO) {
-                        AppDb.get(ctx).settingsDao().upsert(
-                            ReminderSettings(
-                                workStartMin = start,
-                                workEndMin = end,
-                                intervalMin = interval
-                            )
-                        )
-                    }
-                    HourlyReminderWorker.scheduleHourly(
-                        ctx,
-                        interval.toLong(),
-                        start,
-                        end
-                    )
+                onSave(start, end, interval) {
                     saving = false
                     saved = true
                     onSaved()

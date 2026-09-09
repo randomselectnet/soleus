@@ -6,6 +6,6 @@ import org.junit.Test
 class ScaffoldTest {
     @Test
     fun packageName_isCorrect() {
-        assertEquals("com.soleus.office", "com.soleus.office")
+        assertEquals("com.soleus.office", BuildConfig.APPLICATION_ID)
     }
 }

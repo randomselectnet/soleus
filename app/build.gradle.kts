@@ -14,14 +14,16 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
+            // V1 kararı: küçültme/kaynak kırpma kapalı (Lottie/asset güvenliği için).
             isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
     compileOptions {
@@ -33,6 +35,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -59,6 +62,8 @@ dependencies {
     implementation("com.airbnb.android:lottie-compose:6.5.2")
 
     testImplementation("junit:junit:4.13.2")
+    // JVM unit testlerinde gerçek org.json (android.jar stub'ı "not mocked" atar).
+    testImplementation("org.json:json:20240303")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

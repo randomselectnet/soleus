@@ -9,3 +9,5 @@ local.properties
 .idea/
 *.iml
 .DS_Store
+# Subagent raporları (yerel çalışma notları, repoya girmez)
+.superpowers/

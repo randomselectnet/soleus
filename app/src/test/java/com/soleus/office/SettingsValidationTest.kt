@@ -1,13 +1,13 @@
 package com.soleus.office
+import com.soleus.office.ui.settings.ALLOWED_INTERVALS
+import com.soleus.office.ui.settings.isWorkRangeValid
 import org.junit.Test
 import org.junit.Assert.*
 class SettingsValidationTest {
     @Test fun interval_allowedValues() {
-        val allowed = setOf(30,45,60,90)
-        assertTrue(60 in allowed); assertFalse(20 in allowed)
+        assertTrue(60 in ALLOWED_INTERVALS); assertFalse(20 in ALLOWED_INTERVALS)
     }
     @Test fun workRange_valid() {
-        fun valid(s:Int,e:Int) = s in 0..1439 && e in 0..1439 && s < e
-        assertTrue(valid(540,1080)); assertFalse(valid(1080,540))
+        assertTrue(isWorkRangeValid(540,1080)); assertFalse(isWorkRangeValid(1080,540))
     }
 }

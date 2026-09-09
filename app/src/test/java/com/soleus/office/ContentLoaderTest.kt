@@ -1,5 +1,6 @@
 package com.soleus.office
 
+import com.soleus.office.data.ContentLoader
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -14,14 +15,13 @@ class ContentLoaderTest {
     }
 
     @Test fun soleus_firstExercise_hasTwoMinutes() {
-        val json = contentJson()
-        assertTrue(json.contains("soleus-pushup"))
-        assertTrue(json.contains("Soleus Push-Up"))
+        val exercises = ContentLoader.parseJson(contentJson())
+        assertEquals("soleus-pushup", exercises.first().id)
+        assertEquals(120, exercises.first().durationSec)
     }
 
     @Test fun exerciseCount_isEleven() {
-        val json = contentJson()
-        val count = "\"id\"".toRegex().findAll(json).count()
-        assertEquals(11, count)
+        val exercises = ContentLoader.parseJson(contentJson())
+        assertEquals(11, exercises.size)
     }
 }
