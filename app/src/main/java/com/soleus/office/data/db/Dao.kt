@@ -25,3 +25,15 @@ interface SettingsDao {
     @Upsert
     suspend fun upsert(settings: ReminderSettings)
 }
+
+@Dao
+interface PrefDao {
+    @Query("SELECT * FROM exercise_prefs")
+    suspend fun all(): List<ExercisePref>
+
+    @Query("SELECT exerciseId FROM exercise_prefs WHERE enabled = 0")
+    suspend fun disabledIds(): List<String>
+
+    @Upsert
+    suspend fun upsert(pref: ExercisePref)
+}

@@ -18,3 +18,13 @@ data class ReminderSettings(
     val workEndMin: Int = 1080,
     val intervalMin: Int = 60
 )
+
+/**
+ * Egzersiz tercihi: kapalı hareket rotasyona girmez.
+ * Satır yokluğu = açık (varsayılan hepsi açık).
+ */
+@Entity(tableName = "exercise_prefs")
+data class ExercisePref(
+    @PrimaryKey val exerciseId: String,
+    val enabled: Boolean = true
+)

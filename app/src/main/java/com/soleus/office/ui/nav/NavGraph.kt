@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
+import androidx.compose.material.icons.automirrored.outlined.FormatListBulleted
 import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.FormatListBulleted
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
@@ -40,6 +40,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
+import com.soleus.office.domain.dueExercise
+import com.soleus.office.domain.enabledIds
 import com.soleus.office.ui.ExerciseViewModel
 import com.soleus.office.ui.SettingsViewModel
 import com.soleus.office.ui.StatsViewModel
@@ -49,6 +51,7 @@ import com.soleus.office.ui.list.ExerciseListScreen
 import com.soleus.office.ui.onboarding.OnboardingScreen
 import com.soleus.office.ui.settings.SettingsScreen
 import com.soleus.office.ui.stats.StatsScreen
+import com.soleus.office.ui.theme.SereneHeader
 import com.soleus.office.ui.theme.SereneOutline
 import com.soleus.office.ui.theme.SerenePrimary
 import com.soleus.office.ui.theme.SerenePrimaryContainer
@@ -81,8 +84,8 @@ private val ALT_SEKMELER = listOf(
     AltSekme(
         rota = SoleusRotalari.LISTE,
         etiket = "Hareketler",
-        seciliIkon = Icons.Filled.FormatListBulleted,
-        seciliDegilIkon = Icons.Outlined.FormatListBulleted
+        seciliIkon = Icons.AutoMirrored.Filled.FormatListBulleted,
+        seciliDegilIkon = Icons.AutoMirrored.Outlined.FormatListBulleted
     ),
     AltSekme(
         rota = SoleusRotalari.ISTATISTIK,
@@ -120,6 +123,9 @@ fun NavGraph(
     val altBarGoster = mevcutHedef?.route in UST_DUZEY_ROTALAR
 
     Scaffold(
+        topBar = {
+            if (altBarGoster) SereneHeader()
+        },
         bottomBar = {
             if (altBarGoster) {
                 NavigationBar(containerColor = Color.White) {
@@ -185,22 +191,33 @@ fun NavGraph(
                     }
                     vm.refresh()
                 }
-                val siradaki = egzersizler.firstOrNull()
+                val kapali by vm.disabledIds.collectAsState()
+                val recent by vm.recentIds.collectAsState()
+                val bugun by vm.todayCount.collectAsState()
+                // Worker ile aynı filtre: kapalılar havuz dışı, tümü kapalıysa tüm liste.
+                val havuz = enabledIds(egzersizler.map { it.id }, kapali)
+                val siradakiId = runCatching { dueExercise(havuz, recent) }.getOrNull()
+                val siradaki = egzersizler.firstOrNull { it.id == siradakiId }
                 if (siradaki != null) {
                     HomeScreen(
+                        nextId = siradaki.id,
                         nextName = siradaki.trName,
-                        nextDurationSec = siradaki.durationSec,
+                        nextDesc = siradaki.steps.firstOrNull().orEmpty(),
                         streak = streak,
-                        onStart = { navController.navigate(SoleusRotalari.detay(siradaki.id)) },
-                        onOpenList = { navController.navigate(SoleusRotalari.LISTE) },
-                        onOpenStats = { navController.navigate(SoleusRotalari.ISTATISTIK) },
-                        onOpenSettings = { navController.navigate(SoleusRotalari.AYARLAR) }
+                        doneCount = bugun,
+                        totalCount = havuz.size,
+                        onDone = {
+                            vm.logCompletion(siradaki.id, siradaki.durationSec)
+                        }
                     )
                 }
             }
             composable(SoleusRotalari.LISTE) {
+                val kapali by vm.disabledIds.collectAsState()
                 ExerciseListScreen(
                     exercises = egzersizler,
+                    disabledIds = kapali,
+                    onToggle = { id, acik -> vm.setExerciseEnabled(id, acik) },
                     onOpen = { id -> navController.navigate(SoleusRotalari.detay(id)) }
                 )
             }
@@ -224,15 +241,20 @@ fun NavGraph(
             composable(SoleusRotalari.ISTATISTIK) {
                 val statsVm: StatsViewModel = viewModel()
                 val istatistikStreak by statsVm.streak.collectAsState()
-                val counts by statsVm.weeklyCounts.collectAsState()
+                val ayBaslik by statsVm.monthTitle.collectAsState()
+                val aySayi by statsVm.monthCount.collectAsState()
+                val ayHucre by statsVm.monthCells.collectAsState()
                 StatsScreen(
-                    streak = istatistikStreak,
-                    weeklyCounts = counts
+                    monthTitle = ayBaslik,
+                    monthCount = aySayi,
+                    monthCells = ayHucre,
+                    streak = istatistikStreak
                 )
             }
             composable(SoleusRotalari.AYARLAR) {
                 val settingsVm: SettingsViewModel = viewModel()
                 val ayar by settingsVm.settings.collectAsState()
+                val sessiz by settingsVm.quiet.collectAsState()
                 val a = ayar
                 if (a == null) {
                     Box(
@@ -251,9 +273,10 @@ fun NavGraph(
                         workStartMin = a.workStartMin,
                         workEndMin = a.workEndMin,
                         intervalMin = a.intervalMin,
+                        quiet = sessiz,
                         saveError = settingsVm.saveError.collectAsState().value,
-                        onSave = { start, end, interval, done ->
-                            settingsVm.save(start, end, interval) { done(it) }
+                        onSave = { start, end, interval, quietPrefs, done ->
+                            settingsVm.save(start, end, interval, quietPrefs) { done(it) }
                         },
                         onSaved = { navController.popBackStack() }
                     )

@@ -3,6 +3,8 @@ package com.soleus.office.ui
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.soleus.office.data.QuietPrefs
+import com.soleus.office.data.QuietStore
 import com.soleus.office.data.db.AppDb
 import com.soleus.office.data.db.ReminderSettings
 import com.soleus.office.worker.HourlyReminderWorker
@@ -15,8 +17,8 @@ import kotlinx.coroutines.withContext
 
 /**
  * Ayarlar ekranının veri kaynağı.
- * Kayıtlı hatırlatma ayarını yayınlar; kaydetme Room upsert +
- * [HourlyReminderWorker.scheduleHourly] yapar.
+ * Mesai + sıklık Room'da, sessiz saatler SharedPreferences'ta tutulur.
+ * Kaydetme Room upsert + [HourlyReminderWorker.scheduleHourly] yapar.
  */
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -24,6 +26,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     private val _settings = MutableStateFlow<ReminderSettings?>(null)
     val settings: StateFlow<ReminderSettings?> = _settings.asStateFlow()
+
+    private val _quiet = MutableStateFlow(QuietPrefs())
+    val quiet: StateFlow<QuietPrefs> = _quiet.asStateFlow()
 
     private val _saveError = MutableStateFlow<String?>(null)
     /** Son kaydetme hatası (null = hata yok). */
@@ -39,17 +44,20 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             _settings.value = runCatching {
                 AppDb.get(appCtx).settingsDao().get()
             }.getOrNull()
+            _quiet.value = runCatching { QuietStore.load(appCtx) }
+                .getOrDefault(QuietPrefs())
         }
     }
 
     /**
-     * Ayarı kaydet: Room upsert + saatlik hatırlatıcıyı güncelle.
+     * Ayarı kaydet: Room upsert + sessiz saatler + saatlik hatırlatıcıyı güncelle.
      * [onResult] ana thread'te çağrılır: true = kaydedildi, false = hata.
      */
     fun save(
         workStartMin: Int,
         workEndMin: Int,
         intervalMin: Int,
+        quiet: QuietPrefs = _quiet.value,
         onResult: (Boolean) -> Unit = {}
     ) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,10 +69,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             val ok = runCatching {
                 AppDb.get(appCtx).settingsDao().upsert(updated)
             }.isSuccess
+            if (ok) runCatching { QuietStore.save(appCtx, quiet) }
             withContext(Dispatchers.Main) {
                 if (ok) {
                     _saveError.value = null
                     _settings.value = updated
+                    _quiet.value = quiet
                     HourlyReminderWorker.scheduleHourly(
                         appCtx,
                         intervalMin.toLong(),

@@ -8,8 +8,11 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.soleus.office.data.ContentLoader
+import com.soleus.office.data.QuietStore
 import com.soleus.office.data.db.AppDb
 import com.soleus.office.domain.dueExercise
+import com.soleus.office.domain.enabledIds
+import com.soleus.office.domain.isQuietTime
 import com.soleus.office.domain.shouldRemind
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -27,11 +30,23 @@ class HourlyReminderWorker(
         val nowMin = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
         if (!shouldRemind(nowMin, start, end)) return Result.success()
 
+        // Sessiz saatler: aralık içindeyse bildirim atma.
+        val quiet = runCatching { QuietStore.load(applicationContext) }.getOrNull()
+        if (quiet != null && isQuietTime(nowMin, quiet.startMin, quiet.endMin, quiet.enabled)) {
+            return Result.success()
+        }
+
         val inputRecent = inputData.getStringArray(KEY_RECENT_IDS)?.toList().orEmpty()
         val egzersizler = runCatching { ContentLoader.load(applicationContext) }
             .getOrDefault(emptyList())
         if (egzersizler.isEmpty()) return Result.success()
-        val ids = egzersizler.map { it.id }
+
+        // Kapalı hareketler havuzdan çıkar (tümü kapalıysa fail-safe tüm liste).
+        val kapali = runCatching {
+            AppDb.get(applicationContext).prefDao().disabledIds()
+        }.getOrDefault(emptyList())
+        val havuz = enabledIds(egzersizler.map { it.id }, kapali)
+        val ids = havuz
 
         // Rotasyon: son tamamlananları doğrudan DB'den oku (inputData yazılmıyor).
         val dbRecent = runCatching {
