@@ -34,7 +34,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.soleus.office.data.db.Exercise
+import com.soleus.office.data.model.Exercise
 import com.soleus.office.ui.theme.Murekkep
 import kotlinx.coroutines.delay
 

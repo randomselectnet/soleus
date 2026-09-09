@@ -3,7 +3,9 @@ package com.soleus.office.ui.list
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,9 +24,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.soleus.office.data.db.Exercise
+import com.soleus.office.data.model.Exercise
 import com.soleus.office.domain.durationLabel
 import kotlinx.coroutines.delay
 
@@ -47,6 +50,7 @@ fun ExerciseListScreen(
         ) {
             itemsIndexed(exercises, key = { _, e -> e.id }) { index, exercise ->
                 var gorunur by remember { mutableStateOf(false) }
+                val interactionSource = remember { MutableInteractionSource() }
                 LaunchedEffect(Unit) {
                     delay(index * 45L)
                     gorunur = true
@@ -59,7 +63,11 @@ fun ExerciseListScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 64.dp)
-                            .clickable { onOpen(exercise.id) }
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = LocalIndication.current,
+                                role = Role.Button
+                            ) { onOpen(exercise.id) }
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(

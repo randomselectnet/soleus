@@ -13,6 +13,10 @@ class DomainTest {
     @Test fun rotation_wrapsWhenAllDone() {
         assertEquals("a", dueExercise(listOf("a", "b"), listOf("a", "b")))
     }
+    @Test(expected = IllegalArgumentException::class)
+    fun rotation_emptyList_throws() {
+        dueExercise(emptyList(), emptyList())
+    }
     @Test fun streak_countsConsecutive() {
         assertEquals(2, calcStreak(setOf("2026-09-07", "2026-09-08"), "2026-09-08"))
     }

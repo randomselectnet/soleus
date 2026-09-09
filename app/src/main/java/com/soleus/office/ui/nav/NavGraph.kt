@@ -9,25 +9,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
-import com.soleus.office.data.ContentLoader
 import com.soleus.office.data.db.AppDb
 import com.soleus.office.data.db.ReminderSettings
-import com.soleus.office.data.db.SessionLog
+import com.soleus.office.ui.ExerciseViewModel
 import com.soleus.office.ui.detail.ExerciseDetailScreen
 import com.soleus.office.ui.home.HomeScreen
 import com.soleus.office.ui.list.ExerciseListScreen
@@ -37,7 +37,6 @@ import com.soleus.office.ui.stats.StatsScreen
 import com.soleus.office.ui.stats.last7DayCounts
 import com.soleus.office.ui.stats.streakFromLogs
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
@@ -53,8 +52,13 @@ object SoleusRotalari {
 }
 
 @Composable
-fun NavGraph(navController: NavHostController = rememberNavController()) {
+fun NavGraph(
+    navController: NavHostController = rememberNavController(),
+    vm: ExerciseViewModel = viewModel()
+) {
     val appCtx = LocalContext.current
+    val egzersizler by vm.exercises.collectAsState()
+    val streak by vm.streak.collectAsState()
     // Bildirim tap deep-link (soleus://detail/{id}) karşılama.
     LaunchedEffect(Unit) {
         val intent = (appCtx as? Activity)?.intent
@@ -79,19 +83,16 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
         }
         composable(SoleusRotalari.ANA_SAYFA) {
             val ctx = LocalContext.current
-            val egzersizler = remember { ContentLoader.load(ctx) }
-            var streak by remember { mutableIntStateOf(0) }
             LaunchedEffect(Unit) {
                 val done = ctx.getSharedPreferences("soleus", android.content.Context.MODE_PRIVATE)
                     .getBoolean("onboarding_done", false)
                 if (!done) {
-                    navController.navigate(SoleusRotalari.KARSILAMA)
+                    navController.navigate(SoleusRotalari.KARSILAMA) {
+                        popUpTo(SoleusRotalari.ANA_SAYFA) { inclusive = true }
+                    }
                     return@LaunchedEffect
                 }
-                val logs = withContext(Dispatchers.IO) {
-                    AppDb.get(ctx).logDao().recent(365)
-                }
-                streak = streakFromLogs(logs, LocalDate.now())
+                vm.refresh()
             }
             val siradaki = egzersizler.firstOrNull()
             if (siradaki != null) {
@@ -107,8 +108,6 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             }
         }
         composable(SoleusRotalari.LISTE) {
-            val ctx = LocalContext.current
-            val egzersizler = remember { ContentLoader.load(ctx) }
             ExerciseListScreen(
                 exercises = egzersizler,
                 onOpen = { id -> navController.navigate(SoleusRotalari.detay(id)) }
@@ -119,26 +118,13 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             deepLinks = listOf(navDeepLink { uriPattern = "soleus://detail/{id}" })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id").orEmpty()
-            val ctx = LocalContext.current
-            val scope = rememberCoroutineScope()
-            val egzersizler = remember { ContentLoader.load(ctx) }
             val egzersiz = egzersizler.firstOrNull { it.id == id }
                 ?: egzersizler.firstOrNull()
             if (egzersiz != null) {
                 ExerciseDetailScreen(
                     exercise = egzersiz,
                     onDone = {
-                        scope.launch {
-                            withContext(Dispatchers.IO) {
-                                AppDb.get(ctx).logDao().insert(
-                                    SessionLog(
-                                        exerciseId = egzersiz.id,
-                                        timestampMillis = System.currentTimeMillis(),
-                                        durationDoneSec = egzersiz.durationSec
-                                    )
-                                )
-                            }
-                        }
+                        vm.logCompletion(egzersiz.id, egzersiz.durationSec)
                         navController.popBackStack()
                     }
                 )
@@ -146,7 +132,7 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
         }
         composable(SoleusRotalari.ISTATISTIK) {
             val ctx = LocalContext.current
-            var streak by remember { mutableIntStateOf(0) }
+            var istatistikStreak by remember { mutableIntStateOf(0) }
             var counts by remember { mutableStateOf(List(7) { 0 }) }
             LaunchedEffect(Unit) {
                 val logs = withContext(Dispatchers.IO) {
@@ -154,11 +140,11 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
                         .logsSince(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000)
                 }
                 val today = LocalDate.now()
-                streak = streakFromLogs(logs, today)
+                istatistikStreak = streakFromLogs(logs, today)
                 counts = last7DayCounts(logs, today)
             }
             StatsScreen(
-                streak = streak,
+                streak = istatistikStreak,
                 weeklyCounts = counts
             )
         }

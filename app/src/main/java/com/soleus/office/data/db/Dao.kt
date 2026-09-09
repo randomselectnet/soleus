@@ -19,8 +19,8 @@ interface LogDao {
 
 @Dao
 interface SettingsDao {
-    @Query("SELECT * FROM reminder_settings WHERE `key` = 'main'")
-    suspend fun get(): ReminderSettings?
+    @Query("SELECT * FROM reminder_settings WHERE `key` = :key")
+    suspend fun get(key: String = "main"): ReminderSettings?
 
     @Upsert
     suspend fun upsert(settings: ReminderSettings)

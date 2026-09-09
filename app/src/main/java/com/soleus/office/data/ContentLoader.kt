@@ -1,7 +1,7 @@
 package com.soleus.office.data
 
 import android.content.Context
-import com.soleus.office.data.db.Exercise
+import com.soleus.office.data.model.Exercise
 import org.json.JSONArray
 
 object ContentLoader {
