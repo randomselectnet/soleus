@@ -217,8 +217,7 @@ fun NavGraph(
                 ExerciseListScreen(
                     exercises = egzersizler,
                     disabledIds = kapali,
-                    onToggle = { id, acik -> vm.setExerciseEnabled(id, acik) },
-                    onOpen = { id -> navController.navigate(SoleusRotalari.detay(id)) }
+                    onToggle = { id, acik -> vm.setExerciseEnabled(id, acik) }
                 )
             }
             composable(

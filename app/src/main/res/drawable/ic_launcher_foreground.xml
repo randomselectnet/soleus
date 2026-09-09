@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Soleus launcher foreground: topuk-kaldırma motifi.
+<!-- Soleus launcher foreground: topuk-kaldırma motifi (Serene palet).
      108dp viewport; tüm çizgiler 66dp güvenli alan (merkez daire, ~21..87) içinde.
-     Kağıt #FAF6EF: zemin çizgisi + ayak tabanı; Aksan #FF5C1A: yukarı yay/ok. -->
+     Krem #F7FAF8: zemin çizgisi + ayak tabanı; Terracotta #DC9073: yukarı yay/ok. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Yukarı hareket yayı (aksan) -->
+    <!-- Yukarı hareket yayı (terracotta vurgu) -->
     <path
-        android:strokeColor="#FF5C1A"
+        android:strokeColor="#DC9073"
         android:strokeWidth="7"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:pathData="M38,50 L54,32 L70,50" />
 
-    <!-- Ayak tabanı (kağıt), topuk hafif kalkık -->
+    <!-- Ayak tabanı (krem), topuk hafif kalkık -->
     <path
-        android:strokeColor="#FAF6EF"
+        android:strokeColor="#F7FAF8"
         android:strokeWidth="6"
         android:strokeLineCap="round"
         android:pathData="M34,60 L74,60" />
     <!-- Kalkık topuk çıkıntısı -->
     <path
-        android:strokeColor="#FAF6EF"
+        android:strokeColor="#F7FAF8"
         android:strokeWidth="6"
         android:strokeLineCap="round"
         android:pathData="M40,60 L40,54" />
 
-    <!-- Zemin çizgisi (kağıt) -->
+    <!-- Zemin çizgisi (krem) -->
     <path
-        android:strokeColor="#FAF6EF"
+        android:strokeColor="#F7FAF8"
         android:strokeWidth="3.5"
         android:strokeLineCap="round"
         android:pathData="M28,72 L80,72" />

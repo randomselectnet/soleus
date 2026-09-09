@@ -23,7 +23,6 @@ import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,12 +43,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.soleus.office.data.QuietPrefs
 import com.soleus.office.ui.theme.Quicksand
 import com.soleus.office.ui.theme.SereneCard
+import com.soleus.office.ui.theme.SerenePillButton
 import com.soleus.office.ui.theme.SerenePrimary
-import com.soleus.office.ui.theme.SerenePrimaryFixedDim
 import com.soleus.office.ui.theme.SereneSurfaceContainerLow
 
 /** İzin verilen hatırlatma sıklıkları (dk). Saatlik / 2 saatte bir / özel ritim. */
@@ -87,7 +88,7 @@ private fun RitimSatiri(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .clickable(onClick = onClick)
+            .clickable(role = Role.Button, onClick = onClick)
             .padding(8.dp)
             .heightIn(min = 48.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -255,20 +256,29 @@ fun SettingsScreen(
                         ) {
                             CUSTOM_INTERVALS.forEach { secenek ->
                                 val seciliHap = interval == secenek
-                                Text(
-                                    text = "$secenek dk",
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = if (seciliHap) Color.White else SerenePrimary,
+                                Box(
                                     modifier = Modifier
                                         .weight(1f)
+                                        .heightIn(min = 48.dp)
                                         .clip(CircleShape)
                                         .background(
                                             if (seciliHap) SerenePrimary
                                             else SerenePrimary.copy(alpha = 0.12f)
                                         )
-                                        .clickable { interval = secenek }
+                                        .clickable(
+                                            role = Role.Button,
+                                            onClick = { interval = secenek }
+                                        )
                                         .padding(vertical = 12.dp),
-                                )
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "$secenek dk",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = if (seciliHap) Color.White else SerenePrimary,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
                         }
                     }
@@ -360,10 +370,11 @@ fun SettingsScreen(
             }
         }
 
-        Button(
+        SerenePillButton(
+            text = if (saving) "Kaydediliyor…" else "Kaydet",
             onClick = {
-                if (!valid || saving) return@Button
-                if (interval !in ALLOWED_INTERVALS) return@Button
+                if (!valid || saving) return@SerenePillButton
+                if (interval !in ALLOWED_INTERVALS) return@SerenePillButton
                 saving = true
                 onSave(
                     start, end, interval,
@@ -377,12 +388,8 @@ fun SettingsScreen(
                 }
             },
             enabled = valid && !saving && interval in ALLOWED_INTERVALS,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 48.dp)
-        ) {
-            Text(text = if (saving) "Kaydediliyor…" else "Kaydet")
-        }
+            modifier = Modifier.fillMaxWidth()
+        )
         if (saved) {
             Text(
                 text = "Kaydedildi. Hatırlatmalar güncellendi.",

@@ -38,8 +38,7 @@ import com.soleus.office.ui.theme.exerciseIcon
 fun ExerciseListScreen(
     exercises: List<Exercise>,
     disabledIds: Set<String> = emptySet(),
-    onToggle: (String, Boolean) -> Unit = { _, _ -> },
-    onOpen: (String) -> Unit = {}
+    onToggle: (String, Boolean) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier = Modifier

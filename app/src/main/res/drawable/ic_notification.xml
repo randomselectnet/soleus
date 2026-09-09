@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Bildirim ikonu: Android kılavuzuna uygun tamamen beyaz siluet, şeffaf zemin.
-     Renk setColor() ile verilir (aksan turuncu). -->
+     Renk setColor() ile verilir (aksan adaçayı #4A654F). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
