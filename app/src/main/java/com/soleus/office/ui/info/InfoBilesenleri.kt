@@ -40,24 +40,6 @@ val BILGI_SAYFA_BASLIKLARI = mapOf(
     "soleus-nasil-kullanilir" to "Soleus nasıl kullanılır?"
 )
 
-/** Sayı headline stat olarak büyütülürse önüne zorunlu "~" chip'i. */
-@Composable
-fun YaklasikRozet(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .clip(CircleShape)
-            .background(SerenePrimaryContainer)
-            .padding(horizontal = 8.dp, vertical = 2.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "~",
-            style = MaterialTheme.typography.labelMedium,
-            color = SerenePrimary
-        )
-    }
-}
-
 /** Sayfa 1–2 altı kaynakça satırı: jenerik + dürüst ifade. */
 @Composable
 fun KaynakcaSatiri(modifier: Modifier = Modifier) {
