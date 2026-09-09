@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Soleus launcher foreground: topuk-kaldırma motifi.
+     108dp viewport; tüm çizgiler 66dp güvenli alan (merkez daire, ~21..87) içinde.
+     Kağıt #FAF6EF: zemin çizgisi + ayak tabanı; Aksan #FF5C1A: yukarı yay/ok. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Yukarı hareket yayı (aksan) -->
+    <path
+        android:strokeColor="#FF5C1A"
+        android:strokeWidth="7"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M38,50 L54,32 L70,50" />
+
+    <!-- Ayak tabanı (kağıt), topuk hafif kalkık -->
+    <path
+        android:strokeColor="#FAF6EF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M34,60 L74,60" />
+    <!-- Kalkık topuk çıkıntısı -->
+    <path
+        android:strokeColor="#FAF6EF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M40,60 L40,54" />
+
+    <!-- Zemin çizgisi (kağıt) -->
+    <path
+        android:strokeColor="#FAF6EF"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M28,72 L80,72" />
+</vector>

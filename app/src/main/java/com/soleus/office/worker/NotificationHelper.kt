@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.soleus.office.MainActivity
+import com.soleus.office.R
 import com.soleus.office.domain.durationLabel
 
 object NotificationHelper {
@@ -45,7 +46,8 @@ object NotificationHelper {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setColor(0xFFFF5C1A.toInt())
             .setContentTitle("Hareket zamanı")
             .setContentText("$exerciseName — ${durationLabel(durationSec)}")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
